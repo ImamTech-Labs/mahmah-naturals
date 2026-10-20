@@ -1,6 +1,7 @@
 const cartDrawer = document.querySelector("#cart-drawer");
 const drawerBackdrop = document.querySelector("#drawer-backdrop");
 const toast = document.querySelector("#toast");
+const whatsappNumber = "2348133666348";
 const products = [{ id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg" }];
 let cart = JSON.parse(localStorage.getItem("mahmah-cart") || "[]");
 let toastTimer;
@@ -14,6 +15,16 @@ function showToast(message) {
 
 function formatNaira(amount) {
   return `₦${amount.toLocaleString("en-NG")}`;
+}
+
+function openWhatsApp(message) {
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function orderMessage() {
+  const lines = cart.map((item) => `• ${item.name} × ${item.quantity} — ${formatNaira(item.price * item.quantity)}`);
+  return `Hello MahMah Naturals, I’d like to confirm this order:\n${lines.join("\n")}\nSubtotal: ${formatNaira(cart.reduce((sum, item) => sum + item.price * item.quantity, 0))}\n\nPlease confirm availability and delivery cost. My delivery location is: `;
 }
 
 function renderCart() {
@@ -63,7 +74,15 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.querySelectorAll(".chat-trigger").forEach((button) => {
-  button.addEventListener("click", () => showToast("The shop owner’s WhatsApp contact will be added here before launch."));
+  button.addEventListener("click", () => openWhatsApp("Hello MahMah Naturals, I’d like to ask about your products and availability."));
+});
+
+document.querySelector("#checkout-button").addEventListener("click", () => {
+  if (!cart.length) {
+    showToast("Add a product to your bag first.");
+    return;
+  }
+  openWhatsApp(orderMessage());
 });
 
 document.querySelectorAll("[data-add-to-cart]").forEach((button) => {
