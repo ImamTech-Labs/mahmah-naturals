@@ -133,7 +133,7 @@ h1 em { color: var(--gold-deep); font-weight: 500; }
 .owner-note-mark span { position: absolute; top: 12px; right: 20px; font-size: 22px; }
 .owner-note-copy { max-width: 600px; }
 .owner-note-copy .eyebrow { margin-bottom: 12px; }
-.owner-note-copy > p:not(.eyebrow) { max-width: 570px; margin: 16px 0 13px; color: var(--muted); font-size: 12px; line-height: 1.85; }
+.owner-note-copy > p:not(.eyebrow) { max-width: 570px; margin: 16px 0 13px; color: var(--muted); font-size: 14px; line-height: 1.85; }
 .owner-note-stamp { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 114px; height: 114px; border: 1px solid #d5c28b; border-radius: 50%; color: var(--gold-deep); font-family: var(--serif); font-style: italic; transform: rotate(9deg); }
 .owner-note-stamp span { font-size: 19px; }.owner-note-stamp small { margin-top: 3px; font-family: var(--sans); font-size: 6px; font-style: normal; letter-spacing: .28em; }.owner-note-stamp i { margin-top: 6px; font-size: 13px; font-style: normal; }
 .site-footer { background: #28271f; color: #f8f5ec; }
@@ -181,7 +181,7 @@ body.drawer-open { overflow: hidden; }
   .benefit-strip { display: grid; grid-template-columns: 1fr; gap: 12px; justify-content: start; min-height: 0; padding: 19px 23px; }.benefit-strip div { font-size: 10px; }
   .categories-section { padding-block: 62px 68px; }.section-heading { align-items: flex-start; flex-direction: column; gap: 12px; margin-bottom: 25px; }.section-heading h2, .owner-note h2 { font-size: 34px; }.section-intro { max-width: 300px; font-size: 11px; }.category-grid { grid-template-columns: repeat(2,1fr); gap: 11px; }.category-card { min-height: 260px; padding: 15px; }.category-art { min-height: 160px; }.category-art::before { width: 125px; height: 125px; }.category-art i { width: 59px; height: 107px; }.category-art b { width: 40px; height: 30px; }.body-art i { width: 74px; height: 76px; }.body-art b { width: 76px; height: 14px; margin-top: -83px; }.soap-art i { width: 95px; height: 62px; }.soap-art b { width: 58px; }.oil-art i { width: 53px; height: 111px; }.oil-art b { width: 23px; height: 23px; margin-top: -128px; }.category-name { font-size: 16px; }.category-caption { font-size: 9px; }
   .shop-section { padding-block: 62px 67px; }.shop-heading { gap: 16px; }.shop-tools { width: 100%; justify-content: space-between; }.results-count { font-size: 9px; }.filter-row { gap: 6px; margin-bottom: 20px; }.filter-chip { min-height: 31px; padding-inline: 12px; font-size: 9px; }.empty-catalog { min-height: 320px; padding: 32px 19px; }.empty-catalog h3, .drawer-empty h3 { font-size: 24px; }.empty-catalog > p:not(.eyebrow), .drawer-empty p { font-size: 11px; }
-  .owner-note { grid-template-columns: 70px 1fr; gap: 17px; padding-block: 67px; }.owner-note-mark { width: 67px; height: 67px; font-size: 33px; }.owner-note-mark span { top: 7px; right: 9px; font-size: 12px; }.owner-note-copy .eyebrow { font-size: 8px; }.owner-note-copy h2 { font-size: 29px; }.owner-note-copy > p:not(.eyebrow) { font-size: 10px; }.owner-note-stamp { display: none; }
+  .owner-note { grid-template-columns: 70px 1fr; gap: 17px; padding-block: 67px; }.owner-note-mark { width: 67px; height: 67px; font-size: 33px; }.owner-note-mark span { top: 7px; right: 9px; font-size: 12px; }.owner-note-copy .eyebrow { font-size: 8px; }.owner-note-copy h2 { font-size: 29px; }.owner-note-copy > p:not(.eyebrow) { font-size: 12px; }.owner-note-stamp { display: none; }
   .footer-main { grid-template-columns: 1fr 1fr; gap: 30px 20px; padding-block: 38px 31px; }.footer-brand { grid-column: 1 / -1; }.footer-brand img { width: 135px; }.footer-brand p, .footer-delivery p { font-size: 10px; }.footer-bottom { padding-block: 15px 17px; font-size: 8px; }
   .cart-drawer { padding: 22px 20px; }.drawer-head h2 { font-size: 24px; }
 }
@@ -214,3 +214,4 @@ body.drawer-open { overflow: hidden; }
 .drawer-empty[hidden], .drawer-items[hidden] { display: none; }
 @media (max-width: 920px) { .product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 700px) { .product-grid { gap: 12px; } .product-info { padding: 13px; } .product-info h3 { font-size: 17px; } .product-buy-row { align-items: flex-start; flex-direction: column; } .product-buy-row .button { width: 100%; } }
+
