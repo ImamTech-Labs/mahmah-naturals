@@ -48,6 +48,7 @@ button { color: inherit; }
 .hero-copy { padding: 22px 0 12px 8px; }
 .eyebrow { margin: 0 0 17px; color: var(--gold-deep); font-size: 12px; font-weight: 700; letter-spacing: .19em; line-height: 1.5; }
 .hero-copy .eyebrow { display: flex; align-items: center; gap: 10px; }
+.hero-brand-title { margin: 0 0 24px; color: var(--gold-deep); font-family: var(--serif); font-size: clamp(38px, 5vw, 62px); font-weight: 600; letter-spacing: .015em; line-height: 1; }
 .hero-copy .eyebrow span { display: inline-block; width: 24px; height: 1px; background: var(--gold); }
 h1, h2, h3, p { margin-top: 0; }
 h1, h2, h3 { font-family: var(--serif); font-weight: 500; }
