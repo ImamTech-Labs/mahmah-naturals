@@ -1,6 +1,8 @@
 const cartDrawer = document.querySelector("#cart-drawer");
 const drawerBackdrop = document.querySelector("#drawer-backdrop");
 const toast = document.querySelector("#toast");
+const products = [{ id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg" }];
+let cart = JSON.parse(localStorage.getItem("mahmah-cart") || "[]");
 let toastTimer;
 
 function showToast(message) {
@@ -8,6 +10,28 @@ function showToast(message) {
   toast.classList.add("is-visible");
   window.clearTimeout(toastTimer);
   toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 3200);
+}
+
+function formatNaira(amount) {
+  return `₦${amount.toLocaleString("en-NG")}`;
+}
+
+function renderCart() {
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  document.querySelector("#cart-count").textContent = count;
+  document.querySelector("#drawer-cart-count").textContent = `(${count})`;
+  document.querySelector("#cart-subtotal").textContent = formatNaira(cart.reduce((sum, item) => sum + item.price * item.quantity, 0));
+  document.querySelector("#cart-items").innerHTML = cart.map((item) => `
+    <div class="cart-item">
+      <img src="${item.image}" alt="" />
+      <div class="cart-item-copy"><strong>${item.name}</strong><span>${formatNaira(item.price)}</span>
+        <div class="quantity-control"><button type="button" data-quantity="-1" aria-label="Remove one">−</button><span>${item.quantity}</span><button type="button" data-quantity="1" aria-label="Add one">＋</button></div>
+      </div>
+      <button class="remove-item" type="button" data-remove="${item.id}" aria-label="Remove ${item.name}">×</button>
+    </div>`).join("");
+  document.querySelector(".drawer-empty").hidden = count > 0;
+  document.querySelector("#cart-items").hidden = count === 0;
+  localStorage.setItem("mahmah-cart", JSON.stringify(cart));
 }
 
 function openCart() {
@@ -39,41 +63,67 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.querySelectorAll(".chat-trigger").forEach((button) => {
+  button.addEventListener("click", () => showToast("The shop owner’s WhatsApp contact will be added here before launch."));
+});
+
+document.querySelectorAll("[data-add-to-cart]").forEach((button) => {
   button.addEventListener("click", () => {
-    showToast("The shop owner’s WhatsApp contact will be added here before launch.");
+    const product = products.find((item) => item.id === button.dataset.addToCart);
+    const existing = cart.find((item) => item.id === product.id);
+    if (existing) existing.quantity += 1;
+    else cart.push({ ...product, quantity: 1 });
+    renderCart();
+    showToast(`${product.name} added to your bag.`);
   });
+});
+
+document.querySelector("#cart-items").addEventListener("click", (event) => {
+  const removeId = event.target.dataset.remove;
+  const quantityChange = Number(event.target.dataset.quantity);
+  if (removeId) cart = cart.filter((item) => item.id !== removeId);
+  else if (quantityChange) {
+    const item = cart[0];
+    if (item) item.quantity += quantityChange;
+    cart = cart.filter((entry) => entry.quantity > 0);
+  } else return;
+  renderCart();
 });
 
 document.querySelectorAll("[data-filter]").forEach((button) => {
   button.addEventListener("click", () => {
     document.querySelectorAll("[data-filter]").forEach((chip) => chip.classList.remove("is-active"));
     button.classList.add("is-active");
-    const category = button.dataset.filter;
-    const label = category === "all" ? "the full collection" : category.replace("-", " ");
-    showToast(`The ${label} collection will appear here once products are added.`);
+    updateProducts();
   });
 });
 
 document.querySelectorAll("[data-category-link]").forEach((link) => {
   link.addEventListener("click", () => {
     const category = link.dataset.categoryLink;
-    document.querySelectorAll("[data-filter]").forEach((chip) => {
-      const isActive = chip.dataset.filter === category;
-      chip.classList.toggle("is-active", isActive);
-    });
+    document.querySelectorAll("[data-filter]").forEach((chip) => chip.classList.toggle("is-active", chip.dataset.filter === category));
+    updateProducts();
   });
 });
 
-document.querySelector("#product-search").addEventListener("input", (event) => {
-  const hasQuery = event.currentTarget.value.trim().length > 0;
-  document.querySelector("#results-count").textContent = hasQuery ? "No products to match yet" : "Collection coming soon";
-  if (hasQuery) {
-    document.querySelector("#product-grid h3").textContent = "We haven’t added products yet.";
-    document.querySelector("#product-grid > p:not(.eyebrow)").textContent = "Try again when the MahMah Naturals collection is ready, or ask the owner about a product.";
-  } else {
-    document.querySelector("#product-grid h3").textContent = "We’re getting the shelves ready.";
-    document.querySelector("#product-grid > p:not(.eyebrow)").textContent = "Product names, photos, sizes, and prices will appear here as the collection is added.";
-  }
-});
+function updateProducts() {
+  const activeFilter = document.querySelector(".filter-chip.is-active")?.dataset.filter || "all";
+  const query = document.querySelector("#product-search").value.trim().toLowerCase();
+  const matches = products.some((product) => (activeFilter === "all" || product.category === activeFilter) && `${product.name} ${product.category} mahmah`.toLowerCase().includes(query));
+  document.querySelectorAll("[data-product-card]").forEach((card) => {
+    const text = `${card.dataset.name} ${card.dataset.category} mahmah`.toLowerCase();
+    card.hidden = !(text.includes(query) && (activeFilter === "all" || card.dataset.category === activeFilter));
+  });
+  document.querySelector("#results-count").textContent = matches ? "1 product" : "No products found";
+  const grid = document.querySelector("#product-grid");
+  let empty = grid.querySelector(".no-results");
+  if (!matches && !empty) {
+    empty = document.createElement("p");
+    empty.className = "no-results";
+    empty.textContent = "No products match this search yet.";
+    grid.append(empty);
+  } else if (matches && empty) empty.remove();
+}
 
+document.querySelector("#product-search").addEventListener("input", updateProducts);
 document.querySelector("#year").textContent = new Date().getFullYear();
+renderCart();
