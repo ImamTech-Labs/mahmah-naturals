@@ -49,7 +49,7 @@ button { color: inherit; }
 .eyebrow { margin: 0 0 17px; color: var(--gold-deep); font-size: 12px; font-weight: 700; letter-spacing: .19em; line-height: 1.5; }
 .hero-copy .eyebrow { display: flex; align-items: center; gap: 10px; }
 .hero-brand-title { display: flex; flex-direction: column; align-items: flex-start; margin: 0 0 24px; color: var(--gold-deep); line-height: .82; }
-.hero-brand-title span { font-family: "Allura", cursive; font-size: clamp(76px, 9vw, 112px); font-weight: 400; letter-spacing: -.025em; }
+.hero-brand-title span { font-family: "Cormorant Garamond", var(--serif); font-size: clamp(66px, 8vw, 96px); font-style: italic; font-weight: 500; letter-spacing: .015em; }
 .hero-brand-title small { align-self: center; margin-top: 7px; padding-left: .42em; font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: .42em; }
 .hero-copy .eyebrow span { display: inline-block; width: 24px; height: 1px; background: var(--gold); }
 h1, h2, h3, p { margin-top: 0; }
