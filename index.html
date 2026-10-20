@@ -87,7 +87,7 @@
         <div class="section-wrap">
           <div class="section-heading shop-heading">
             <div><p class="eyebrow">THE MAHMAH COLLECTION</p><h2>Find your favourites.</h2></div>
-            <div class="shop-tools"><span class="results-count" id="results-count">Collection coming soon</span><label class="sort-control">Sort <select id="sort-products" disabled aria-label="Sort products"><option>Featured</option></select></label></div>
+                       <div class="shop-tools"><span class="results-count" id="results-count">1 product</span><label class="sort-control">Sort <select id="sort-products" disabled aria-label="Sort products"><option>Featured</option></select></label></div>
           </div>
           <div class="filter-row" role="group" aria-label="Filter products by category">
             <button class="filter-chip is-active" type="button" data-filter="all">All products</button>
@@ -96,12 +96,11 @@
             <button class="filter-chip" type="button" data-filter="soaps">Soaps</button>
             <button class="filter-chip" type="button" data-filter="oils">Oils</button>
           </div>
-          <div class="empty-catalog" id="product-grid" aria-live="polite">
-            <div class="empty-catalog-mark" aria-hidden="true"><span>✦</span></div>
-            <p class="eyebrow">A FRESH COLLECTION IS ON ITS WAY</p>
-            <h3>We’re getting the shelves ready.</h3>
-            <p>Product names, photos, sizes, and prices will appear here as the collection is added.</p>
-            <button class="button button-outline chat-trigger" type="button">Ask the owner about products <span aria-hidden="true">→</span></button>
+                      <div class="product-grid" id="product-grid" aria-live="polite">
+                        <article class="product-card" data-product-card data-category="soaps" data-name="MahMah Naturals Homemade Black Soap">
+                          <div class="product-image-wrap"><img class="product-image" src="assets/mahmah-homemade-black-soap.jpeg" alt="Jar of MahMah Naturals homemade black soap" /><span class="product-tag">MADE BY MAHMAH</span></div>
+                          <div class="product-info"><p class="product-category">SOAPS</p><h3>Homemade Black Soap</h3><p class="product-description">A handmade black soap from MahMah Naturals.</p><div class="product-buy-row"><strong>₦5,000</strong><button class="button button-dark add-to-cart" type="button" data-add-to-cart="black-soap">Add to bag <span aria-hidden="true">＋</span></button></div></div>
+                        </article>
           </div>
         </div>
       </section>
@@ -125,7 +124,7 @@
     <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
     <aside class="cart-drawer" id="cart-drawer" aria-labelledby="cart-title" aria-hidden="true" inert>
       <div class="drawer-head"><div><p class="eyebrow">YOUR SELECTION</p><h2 id="cart-title">Your bag <span id="drawer-cart-count">(0)</span></h2></div><button class="icon-button" id="close-cart" type="button" aria-label="Close bag">×</button></div>
-      <div class="drawer-empty"><div class="empty-catalog-mark" aria-hidden="true"><span>♡</span></div><h3>Your bag is taking a little rest.</h3><p>When products are added to the collection, you can build your order here.</p><button class="button button-dark" id="continue-shopping" type="button">Continue browsing</button></div>
+                  <div class="drawer-empty"><div class="empty-catalog-mark" aria-hidden="true"><span>♡</span></div><h3>Your bag is taking a little rest.</h3><p>Add the homemade black soap to start your order.</p><button class="button button-dark" id="continue-shopping" type="button">Continue browsing</button></div>
       <div class="drawer-items" id="cart-items"></div>
       <div class="drawer-footer"><div class="subtotal-row"><span>Subtotal</span><strong id="cart-subtotal">₦0</strong></div><p>Delivery cost is confirmed with the owner before payment.</p><button class="button button-dark checkout-button" id="checkout-button" type="button" disabled>Continue to checkout</button><span class="checkout-note">Online payment will be set up before launch.</span></div>
     </aside>
