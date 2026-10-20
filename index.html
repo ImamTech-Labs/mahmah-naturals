@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fbf8f0" />
+    <meta name="description" content="Shop skincare, body care, soaps, and oils from MahMah Naturals." />
+    <title>MahMah Naturals | Everyday care, naturally</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="announcement">Thoughtful care for your everyday routine <span aria-hidden="true">✦</span> Delivery across Nigeria</div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="MahMah Naturals home">
+        <img src="assets/mahmah-naturals-logo.jpeg" alt="MahMah Naturals logo" />
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#shop" data-category-link="all">Shop</a>
+        <a href="#categories">Collections</a>
+        <a href="#about">Our approach</a>
+      </nav>
+
+      <div class="header-actions">
+        <label class="search-box">
+          <span class="sr-only">Search products</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
+          <input id="product-search" type="search" placeholder="Search products" autocomplete="off" />
+        </label>
+        <button class="cart-button" id="open-cart" type="button" aria-label="Open cart">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21 8H6"></path><circle cx="9.5" cy="20" r="1.2"></circle><circle cx="18" cy="20" r="1.2"></circle></svg>
+          <span>Bag</span><span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero section-wrap">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> MAHMAH NATURALS</p>
+          <h1>Make room for<br /><em>your natural glow.</em></h1>
+          <p class="hero-description">Skincare and body care for the little rituals that make you feel good in your skin.</p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#shop">Explore the collection <span aria-hidden="true">↗</span></a>
+            <button class="text-button chat-trigger" type="button">Chat before you order <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="hero-note"><span class="note-sparkle" aria-hidden="true">✦</span><span>Personal guidance from the shop owner</span></div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-halo"></div>
+          <div class="art-sun"></div>
+          <div class="art-leaf art-leaf-one"></div>
+          <div class="art-leaf art-leaf-two"></div>
+          <div class="art-leaf art-leaf-three"></div>
+          <div class="mock-bottle"><div class="mock-cap"></div><div class="mock-label"><span>MahMah</span><small>NATURALS</small><i></i></div></div>
+          <div class="mock-jar"><div class="jar-lid"></div><div class="jar-body"><span>MahMah</span><small>DAILY CARE</small></div></div>
+          <div class="art-caption">A little care, every day</div>
+          <div class="art-dot dot-one"></div><div class="art-dot dot-two"></div><div class="art-dot dot-three"></div>
+        </div>
+      </section>
+
+      <section class="benefit-strip" aria-label="Shopping details">
+        <div><span class="benefit-icon">✦</span><span>Skincare, body care, soaps & oils</span></div>
+        <div><span class="benefit-icon">♡</span><span>Chat with the owner before ordering</span></div>
+        <div><span class="benefit-icon">↗</span><span>Owner-delivered across Nigeria</span></div>
+      </section>
+
+      <section class="section-wrap categories-section" id="categories">
+        <div class="section-heading">
+          <div><p class="eyebrow">FIND YOUR RITUAL</p><h2>Care, your way.</h2></div>
+          <p class="section-intro">Explore the kinds of care you’ll find at MahMah Naturals.</p>
+        </div>
+        <div class="category-grid">
+          <a class="category-card category-skin" href="#shop" data-category-link="skincare"><span class="category-number">01</span><span class="category-art skin-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Skincare <span>↗</span></span><span class="category-caption">Everyday face care</span></a>
+          <a class="category-card category-body" href="#shop" data-category-link="body-care"><span class="category-number">02</span><span class="category-art body-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Body care <span>↗</span></span><span class="category-caption">A softer daily ritual</span></a>
+          <a class="category-card category-soap" href="#shop" data-category-link="soaps"><span class="category-number">03</span><span class="category-art soap-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Soaps <span>↗</span></span><span class="category-caption">A fresh start</span></a>
+          <a class="category-card category-oils" href="#shop" data-category-link="oils"><span class="category-number">04</span><span class="category-art oil-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Oils <span>↗</span></span><span class="category-caption">A nourishing finishing touch</span></a>
+        </div>
+      </section>
+
+      <section class="shop-section" id="shop">
+        <div class="section-wrap">
+          <div class="section-heading shop-heading">
+            <div><p class="eyebrow">THE MAHMAH COLLECTION</p><h2>Find your favourites.</h2></div>
+            <div class="shop-tools"><span class="results-count" id="results-count">Collection coming soon</span><label class="sort-control">Sort <select id="sort-products" disabled aria-label="Sort products"><option>Featured</option></select></label></div>
+          </div>
+          <div class="filter-row" role="group" aria-label="Filter products by category">
+            <button class="filter-chip is-active" type="button" data-filter="all">All products</button>
+            <button class="filter-chip" type="button" data-filter="skincare">Skincare</button>
+            <button class="filter-chip" type="button" data-filter="body-care">Body care</button>
+            <button class="filter-chip" type="button" data-filter="soaps">Soaps</button>
+            <button class="filter-chip" type="button" data-filter="oils">Oils</button>
+          </div>
+          <div class="empty-catalog" id="product-grid" aria-live="polite">
+            <div class="empty-catalog-mark" aria-hidden="true"><span>✦</span></div>
+            <p class="eyebrow">A FRESH COLLECTION IS ON ITS WAY</p>
+            <h3>We’re getting the shelves ready.</h3>
+            <p>Product names, photos, sizes, and prices will appear here as the collection is added.</p>
+            <button class="button button-outline chat-trigger" type="button">Ask the owner about products <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="owner-note section-wrap" id="about">
+        <div class="owner-note-mark" aria-hidden="true">M<span>✦</span></div>
+        <div class="owner-note-copy"><p class="eyebrow">HERE TO HELP YOU CHOOSE</p><h2>Good care starts with a conversation.</h2><p>Before placing an order, chat with the shop owner to check product availability and confirm delivery to your location. Your delivery cost will be confirmed with you before payment.</p><button class="text-button chat-trigger" type="button">Chat with MahMah Naturals <span aria-hidden="true">→</span></button></div>
+        <div class="owner-note-stamp"><span>MAHMAH</span><small>NATURALS</small><i>✦</i></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="section-wrap footer-main">
+        <div class="footer-brand"><img src="assets/mahmah-naturals-logo.jpeg" alt="MahMah Naturals" /><p>Everyday care, with a little more intention.</p></div>
+        <div class="footer-links"><span class="eyebrow">EXPLORE</span><a href="#shop">Shop all</a><a href="#categories">Collections</a><a href="#about">Contact the owner</a></div>
+        <div class="footer-delivery"><span class="eyebrow">DELIVERY</span><p>Orders are delivered personally by the shop owner. Delivery details are confirmed with you before payment.</p></div>
+      </div>
+      <div class="footer-bottom section-wrap"><span>© <span id="year"></span> MahMah Naturals</span><span>Made with care <b>✦</b></span></div>
+    </footer>
+
+    <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+    <aside class="cart-drawer" id="cart-drawer" aria-labelledby="cart-title" aria-hidden="true" inert>
+      <div class="drawer-head"><div><p class="eyebrow">YOUR SELECTION</p><h2 id="cart-title">Your bag <span id="drawer-cart-count">(0)</span></h2></div><button class="icon-button" id="close-cart" type="button" aria-label="Close bag">×</button></div>
+      <div class="drawer-empty"><div class="empty-catalog-mark" aria-hidden="true"><span>♡</span></div><h3>Your bag is taking a little rest.</h3><p>When products are added to the collection, you can build your order here.</p><button class="button button-dark" id="continue-shopping" type="button">Continue browsing</button></div>
+      <div class="drawer-items" id="cart-items"></div>
+      <div class="drawer-footer"><div class="subtotal-row"><span>Subtotal</span><strong id="cart-subtotal">₦0</strong></div><p>Delivery cost is confirmed with the owner before payment.</p><button class="button button-dark checkout-button" id="checkout-button" type="button" disabled>Continue to checkout</button><span class="checkout-note">Online payment will be set up before launch.</span></div>
+    </aside>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
