@@ -1,9 +1,17 @@
 const cartDrawer = document.querySelector("#cart-drawer");
 const drawerBackdrop = document.querySelector("#drawer-backdrop");
 const toast = document.querySelector("#toast");
+const paymentError = document.querySelector("#payment-error");
 const whatsappNumber = "2348133666348";
 const products = [{ id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg" }];
+const deliveryZones = {
+  kaduna: { name: "Kaduna State (all areas, including Zaria)", fee: 1000 },
+  kano: { name: "Kano State", fee: 1500 },
+  katsina: { name: "Katsina State", fee: 2500 },
+  abuja: { name: "Abuja (FCT)", fee: 2000 },
+};
 let cart = JSON.parse(localStorage.getItem("mahmah-cart") || "[]");
+let deliveryZone = "";
 let toastTimer;
 
 function showToast(message) {
@@ -22,16 +30,30 @@ function openWhatsApp(message) {
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
+function cartSubtotal() {
+  return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+
+function selectedDelivery() {
+  return deliveryZones[deliveryZone] || null;
+}
+
 function orderMessage() {
   const lines = cart.map((item) => `• ${item.name} × ${item.quantity} — ${formatNaira(item.price * item.quantity)}`);
-  return `Hello MahMah Naturals, I’d like to confirm this order:\n${lines.join("\n")}\nSubtotal: ${formatNaira(cart.reduce((sum, item) => sum + item.price * item.quantity, 0))}\n\nPlease confirm availability and delivery cost. My delivery location is: `;
+  const delivery = selectedDelivery();
+  const subtotal = cartSubtotal();
+  return `Hello MahMah Naturals, I’d like to confirm this order:\n${lines.join("\n")}\nDelivery location: ${delivery.name}\nSubtotal: ${formatNaira(subtotal)}\nDelivery fee: ${formatNaira(delivery.fee)}\nEstimated total: ${formatNaira(subtotal + delivery.fee)}\n\nPlease confirm product availability. My full delivery address (area/LGA, street and landmark) is: `;
 }
 
 function renderCart() {
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const subtotal = cartSubtotal();
+  const delivery = selectedDelivery();
   document.querySelector("#cart-count").textContent = count;
   document.querySelector("#drawer-cart-count").textContent = `(${count})`;
-  document.querySelector("#cart-subtotal").textContent = formatNaira(cart.reduce((sum, item) => sum + item.price * item.quantity, 0));
+  document.querySelector("#cart-subtotal").textContent = formatNaira(subtotal);
+  document.querySelector("#cart-delivery").textContent = delivery ? formatNaira(delivery.fee) : "Choose a location";
+  document.querySelector("#cart-total").textContent = formatNaira(subtotal + (delivery?.fee || 0));
   document.querySelector("#cart-items").innerHTML = cart.map((item) => `
     <div class="cart-item">
       <img src="${item.image}" alt="" />
@@ -82,7 +104,60 @@ document.querySelector("#checkout-button").addEventListener("click", () => {
     showToast("Add a product to your bag first.");
     return;
   }
+  if (!selectedDelivery()) {
+    showToast("Choose an available delivery location first.");
+    document.querySelector("#delivery-zone").focus();
+    return;
+  }
   openWhatsApp(orderMessage());
+});
+
+document.querySelector("#delivery-zone").addEventListener("change", (event) => {
+  deliveryZone = event.target.value;
+  renderCart();
+});
+
+document.querySelector("#pay-button").addEventListener("click", async (event) => {
+  const button = event.currentTarget;
+  const emailField = document.querySelector("#payment-email");
+  if (!cart.length) {
+    showToast("Add a product to your bag first.");
+    return;
+  }
+  if (!selectedDelivery()) {
+    showToast("Choose an available delivery location first.");
+    document.querySelector("#delivery-zone").focus();
+    return;
+  }
+  if (!emailField.reportValidity()) return;
+  if (!document.querySelector("#owner-confirmed").checked) {
+    showToast("Please chat with the owner and confirm your order first.");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Connecting to Paystack…";
+  paymentError.hidden = true;
+  paymentError.textContent = "";
+  try {
+    const response = await fetch("/api/paystack/initialize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailField.value.trim(),
+        deliveryZone,
+        items: cart.map(({ id, quantity }) => ({ id, quantity })),
+      }),
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "Paystack checkout could not start.");
+    window.location.assign(result.authorizationUrl);
+  } catch (error) {
+    paymentError.textContent = error.message || "Could not connect to Paystack. Please try again.";
+    paymentError.hidden = false;
+    button.disabled = false;
+    button.textContent = "Continue to secure Paystack checkout";
+  }
 });
 
 document.querySelectorAll("[data-add-to-cart]").forEach((button) => {
