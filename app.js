@@ -51,8 +51,8 @@ function renderCart() {
   document.querySelector("#cart-count").textContent = count;
   document.querySelector("#drawer-cart-count").textContent = `(${count})`;
   document.querySelector("#cart-subtotal").textContent = formatNaira(subtotal);
-  document.querySelector("#cart-delivery").textContent = delivery ? formatNaira(delivery.fee) : "Choose a location";
-  document.querySelector("#cart-total").textContent = formatNaira(subtotal + (delivery?.fee || 0));
+  document.querySelector("#cart-delivery").textContent = count && delivery ? formatNaira(delivery.fee) : "Choose a location";
+  document.querySelector("#cart-total").textContent = formatNaira(subtotal + (count && delivery ? delivery.fee : 0));
   document.querySelector("#cart-items").innerHTML = cart.map((item) => `
     <div class="cart-item">
       <img src="${item.image}" alt="" />
