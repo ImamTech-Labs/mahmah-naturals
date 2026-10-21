@@ -1,10 +1,10 @@
 # MahMah Naturals
 
-An online cosmetics store for MahMah Naturals, featuring skincare, body care, soaps, and oils.
+An online storefront for MahMah Naturals, featuring skincare, body care, soaps, and oils.
 
-## Current storefront
+## Current customer order flow
 
-The responsive storefront currently lists MahMah Naturals' homemade black soap at ₦5,000. Customers can choose one of the supported delivery locations, see the delivery fee and estimated total, chat with the owner to confirm availability, then continue to Paystack checkout.
+The storefront currently lists MahMah Naturals' homemade black soap at ₦5,000. Customers can add it to their bag, choose a supported delivery location, review the product subtotal, delivery fee, and estimated total, then send the order details to the shop owner through WhatsApp. The owner confirms availability and delivery details directly with the customer.
 
 Current delivery fees:
 
@@ -13,24 +13,21 @@ Current delivery fees:
 - Abuja (FCT): ₦2,000
 - Katsina State: ₦2,500
 
-Other locations are unavailable until their fees are supplied.
+Other locations are not available until their delivery fees are supplied.
 
-## Local Paystack Test Mode setup
+Online Paystack checkout is currently disconnected from the storefront. The earlier Python payment server is retained for future development, but it is not needed for the WhatsApp order flow.
 
-This local server accepts **Test Mode secret keys only**. It validates product prices and delivery fees on the server, initializes Paystack checkout, and verifies the returned payment reference and amount before showing confirmation. The private key is read from `.env`, which is excluded from Git.
+## Prepare a static website for hosting
 
-1. Copy `.env.example` to a new file named `.env` in this folder.
-2. In `.env`, replace the sample value with the Paystack **Test Secret Key** (`sk_test_...`). Never paste the secret key into chat or commit `.env` to GitHub.
-3. Start the local checkout server from this folder with `python server.py`.
-4. Open `http://127.0.0.1:4174/` and try the checkout with Paystack's test payment details.
+The customer-facing site is static HTML, CSS, and JavaScript. Run `python build_static.py` to copy only the storefront files and product/logo images into the `dist` folder. Use `dist` as the output folder when setting up static hosting. This keeps the Python payment server, local environment file, and order database out of the published website.
 
-The buyer first contacts the owner in WhatsApp. After the owner confirms the product and delivery details, the buyer enters an email, confirms the conversation, and continues to Paystack's secure hosted checkout. Paystack then returns the buyer to the site's payment confirmation page.
+The `.env` file and local `orders.sqlite3` database are excluded from Git. Never commit a Paystack secret key or paste it into chat.
 
-This is a local Test Mode setup, not a production payment server. Before publishing, deploy the backend over HTTPS, configure the live key securely in the hosting provider, use a durable order store, and add Paystack webhook handling. Never put the secret key in browser JavaScript or a public repository.
+## Main files
 
-## Files
+- `index.html`, `styles.css`, `app.js`: storefront, product display, cart totals, delivery choices, and WhatsApp order message.
+- `assets/`: MahMah Naturals logo and product photo.
+- `build_static.py`: prepares the public static hosting folder.
+- `server.py`, `payment-return.html`, `payment-return.js`: retained local Test Mode payment work; not part of the static customer site.
+- `.env.example`: safe settings template for future local Test Mode work.
 
-- `index.html`, `styles.css`, `app.js`: storefront and customer checkout flow.
-- `server.py`: local Test Mode payment initialization and verification.
-- `payment-return.html`, `payment-return.js`: payment status page.
-- `.env.example`: safe settings template; copy it to the ignored `.env` for local credentials.
