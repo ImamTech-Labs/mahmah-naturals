@@ -4,7 +4,7 @@ An online storefront for MahMah Naturals, featuring skincare, body care, soaps, 
 
 ## Current customer order flow
 
-The storefront currently lists MahMah Naturals' homemade black soap at ₦5,000. Customers can add it to their bag, choose a supported delivery location, review the product subtotal, delivery fee, and estimated total, then send the order details to the shop owner through WhatsApp. The owner confirms availability and delivery details directly with the customer.
+The storefront currently lists MahMah Naturals' homemade black soap and body scrub, each at ₦5,000. Customers can add either product to their bag, choose a supported delivery location, review the product subtotal, delivery fee, and estimated total, then send the order details to the shop owner through WhatsApp. The owner confirms availability and delivery details directly with the customer.
 
 Current delivery fees:
 
@@ -26,8 +26,7 @@ The `.env` file and local `orders.sqlite3` database are excluded from Git. Never
 ## Main files
 
 - `index.html`, `styles.css`, `app.js`: storefront, product display, cart totals, delivery choices, and WhatsApp order message.
-- `assets/`: MahMah Naturals logo and product photo.
+- `assets/`: MahMah Naturals logo and product photos.
 - `build_static.py`: prepares the public static hosting folder.
 - `server.py`, `payment-return.html`, `payment-return.js`: retained local Test Mode payment work; not part of the static customer site.
 - `.env.example`: safe settings template for future local Test Mode work.
-
