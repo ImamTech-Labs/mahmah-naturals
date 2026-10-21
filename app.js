@@ -1,7 +1,6 @@
 const cartDrawer = document.querySelector("#cart-drawer");
 const drawerBackdrop = document.querySelector("#drawer-backdrop");
 const toast = document.querySelector("#toast");
-const paymentError = document.querySelector("#payment-error");
 const whatsappNumber = "2348133666348";
 const products = [{ id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg" }];
 const deliveryZones = {
@@ -117,49 +116,6 @@ document.querySelector("#delivery-zone").addEventListener("change", (event) => {
   renderCart();
 });
 
-document.querySelector("#pay-button").addEventListener("click", async (event) => {
-  const button = event.currentTarget;
-  const emailField = document.querySelector("#payment-email");
-  if (!cart.length) {
-    showToast("Add a product to your bag first.");
-    return;
-  }
-  if (!selectedDelivery()) {
-    showToast("Choose an available delivery location first.");
-    document.querySelector("#delivery-zone").focus();
-    return;
-  }
-  if (!emailField.reportValidity()) return;
-  if (!document.querySelector("#owner-confirmed").checked) {
-    showToast("Please chat with the owner and confirm your order first.");
-    return;
-  }
-
-  button.disabled = true;
-  button.textContent = "Connecting to Paystack…";
-  paymentError.hidden = true;
-  paymentError.textContent = "";
-  try {
-    const response = await fetch("/api/paystack/initialize", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: emailField.value.trim(),
-        deliveryZone,
-        items: cart.map(({ id, quantity }) => ({ id, quantity })),
-      }),
-    });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error || "Paystack checkout could not start.");
-    window.location.assign(result.authorizationUrl);
-  } catch (error) {
-    paymentError.textContent = error.message || "Could not connect to Paystack. Please try again.";
-    paymentError.hidden = false;
-    button.disabled = false;
-    button.textContent = "Continue to secure Paystack checkout";
-  }
-});
-
 document.querySelectorAll("[data-add-to-cart]").forEach((button) => {
   button.addEventListener("click", () => {
     const product = products.find((item) => item.id === button.dataset.addToCart);
@@ -221,3 +177,4 @@ function updateProducts() {
 document.querySelector("#product-search").addEventListener("input", updateProducts);
 document.querySelector("#year").textContent = new Date().getFullYear();
 renderCart();
+
