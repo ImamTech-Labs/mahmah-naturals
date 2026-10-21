@@ -2,7 +2,10 @@ const cartDrawer = document.querySelector("#cart-drawer");
 const drawerBackdrop = document.querySelector("#drawer-backdrop");
 const toast = document.querySelector("#toast");
 const whatsappNumber = "2348133666348";
-const products = [{ id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg" }];
+const products = [
+  { id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg" },
+  { id: "body-scrub", name: "Body Scrub", category: "body-care", price: 5000, image: "assets/mahmah-body-scrub.jpeg" },
+];
 const deliveryZones = {
   kaduna: { name: "Kaduna State (all areas, including Zaria)", fee: 1000 },
   kano: { name: "Kano State", fee: 1500 },
@@ -158,23 +161,22 @@ document.querySelectorAll("[data-category-link]").forEach((link) => {
 function updateProducts() {
   const activeFilter = document.querySelector(".filter-chip.is-active")?.dataset.filter || "all";
   const query = document.querySelector("#product-search").value.trim().toLowerCase();
-  const matches = products.some((product) => (activeFilter === "all" || product.category === activeFilter) && `${product.name} ${product.category} mahmah`.toLowerCase().includes(query));
+  const matches = products.filter((product) => (activeFilter === "all" || product.category === activeFilter) && `${product.name} ${product.category} mahmah`.toLowerCase().includes(query));
   document.querySelectorAll("[data-product-card]").forEach((card) => {
     const text = `${card.dataset.name} ${card.dataset.category} mahmah`.toLowerCase();
     card.hidden = !(text.includes(query) && (activeFilter === "all" || card.dataset.category === activeFilter));
   });
-  document.querySelector("#results-count").textContent = matches ? "1 product" : "No products found";
+  document.querySelector("#results-count").textContent = matches.length ? `${matches.length} ${matches.length === 1 ? "product" : "products"}` : "No products found";
   const grid = document.querySelector("#product-grid");
   let empty = grid.querySelector(".no-results");
-  if (!matches && !empty) {
+  if (!matches.length && !empty) {
     empty = document.createElement("p");
     empty.className = "no-results";
     empty.textContent = "No products match this search yet.";
     grid.append(empty);
-  } else if (matches && empty) empty.remove();
+  } else if (matches.length && empty) empty.remove();
 }
 
 document.querySelector("#product-search").addEventListener("input", updateProducts);
 document.querySelector("#year").textContent = new Date().getFullYear();
 renderCart();
-
