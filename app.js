@@ -75,7 +75,11 @@ function orderMessage() {
   const lines = cart.map((item) => `• ${item.name} × ${item.quantity} — ${formatNaira(item.price * item.quantity)}`);
   const delivery = selectedDelivery();
   const subtotal = cartSubtotal();
-  return `Hello MahMah Naturals, I’d like to confirm this order:\n${lines.join("\n")}\nDelivery location: ${delivery.name}\nSubtotal: ${formatNaira(subtotal)}\nDelivery fee: ${formatNaira(delivery.fee)}\nEstimated total: ${formatNaira(subtotal + delivery.fee)}\n\nPlease confirm product availability. My full delivery address (area/LGA, street and landmark) is: `;
+  const customerName = document.querySelector("#customer-name").value.trim();
+  const customerPhone = document.querySelector("#customer-phone").value.trim();
+  const deliveryAddress = document.querySelector("#delivery-address").value.trim();
+  const orderNote = document.querySelector("#order-note").value.trim();
+  return `Hello MahMah Naturals, I’d like to confirm this order:\n\nCustomer name: ${customerName}\nPhone number: ${customerPhone}\n\nORDER ITEMS\n${lines.join("\n")}\n\nDelivery location: ${delivery.name}\nDelivery address: ${deliveryAddress}\nSubtotal: ${formatNaira(subtotal)}\nDelivery fee: ${formatNaira(delivery.fee)}\nEstimated total: ${formatNaira(subtotal + delivery.fee)}\n${orderNote ? `\nAdditional note: ${orderNote}\n` : ""}\nPlease confirm product availability and the final order total before I proceed with payment.`;
 }
 
 function renderCart() {
@@ -97,7 +101,11 @@ function renderCart() {
     </div>`).join("");
   document.querySelector(".drawer-empty").hidden = count > 0;
   document.querySelector("#cart-items").hidden = count === 0;
-  localStorage.setItem("mahmah-cart", JSON.stringify(cart));
+  try {
+    localStorage.setItem("mahmah-cart", JSON.stringify(cart));
+  } catch {
+    showToast("Your bag is available for this visit, but could not be saved on this device.");
+  }
 }
 
 function openCart() {
@@ -174,9 +182,28 @@ document.querySelector("#checkout-button").addEventListener("click", () => {
     showToast("Add a product to your bag first.");
     return;
   }
+  const customerName = document.querySelector("#customer-name");
+  const customerPhone = document.querySelector("#customer-phone");
+  const deliveryAddress = document.querySelector("#delivery-address");
+  if (customerName.value.trim().length < 2) {
+    showToast("Enter the customer's full name.");
+    customerName.focus();
+    return;
+  }
+  const phoneDigits = customerPhone.value.replace(/\\D/g, "");
+  if (phoneDigits.length < 7 || phoneDigits.length > 15) {
+    showToast("Enter a valid phone number, including the country code if needed.");
+    customerPhone.focus();
+    return;
+  }
   if (!selectedDelivery()) {
     showToast("Choose an available delivery location first.");
     document.querySelector("#delivery-zone").focus();
+    return;
+  }
+  if (deliveryAddress.value.trim().length < 8) {
+    showToast("Enter a delivery address with an area and a useful landmark.");
+    deliveryAddress.focus();
     return;
   }
   openWhatsApp(orderMessage());
