@@ -17,6 +17,24 @@ Other locations are not available until their delivery fees are supplied.
 
 Online Paystack checkout is currently disconnected from the storefront. The earlier Python payment server is retained for future development, but it is not needed for the WhatsApp order flow.
 
+## Automated checks
+
+GitHub Actions runs the checkout validation tests and builds the static storefront on pushes and pull requests to `main`.
+
+To run the tests locally:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+To verify the static hosting output:
+
+```bash
+python build_static.py
+```
+
+The automated checkout tests cover the storefront product catalogue, server-calculated totals, supported delivery zones, and invalid cart input.
+
 ## Contributing and security
 
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing code changes.
