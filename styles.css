@@ -228,3 +228,7 @@ body.drawer-open { overflow: hidden; }
 .drawer-empty[hidden], .drawer-items[hidden] { display: none; }
 @media (max-width: 920px) { .product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 700px) { .product-grid { gap: 12px; } .product-info { padding: 13px; } .product-info h3 { font-size: 17px; } .product-buy-row { align-items: flex-start; flex-direction: column; } .product-buy-row .button { width: 100%; } }
+
+.product-placeholder { display: grid; place-items: center; width: 100%; height: 100%; color: #806b3d; background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.82), transparent 44%), linear-gradient(145deg,#eee6d4,#d9cba9); font-family: var(--serif); font-size: clamp(20px,2.5vw,31px); font-style: italic; letter-spacing: .04em; }
+.placeholder-oils { background: radial-gradient(circle at 50% 42%,rgba(255,255,255,.78),transparent 43%),linear-gradient(145deg,#e8e4cf,#c8c39c); }
+.placeholder-skincare { background: radial-gradient(circle at 50% 42%,rgba(255,255,255,.8),transparent 43%),linear-gradient(145deg,#f1e5dc,#d9c2b1); }
