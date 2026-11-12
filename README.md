@@ -4,7 +4,7 @@ An online storefront for MahMah Naturals, featuring skincare, body care, soaps, 
 
 ## Current customer order flow
 
-The storefront currently lists MahMah Naturals' homemade black soap and body scrub, each at ₦5,000. Customers can add either product to their bag, choose a supported delivery location, review the product subtotal, delivery fee, and estimated total, then send the order details to the shop owner through WhatsApp. The owner confirms availability and delivery details directly with the customer.
+The storefront has two confirmed, orderable products: MahMah Naturals' homemade black soap and body scrub, each at ₦5,000. It also displays four proposed skincare and oil catalogue entries as enquiry-only listings; their stock and prices must be confirmed by the shop owner before they can be ordered. Customers can search, filter, and sort the catalogue. Confirmed products can be added to the bag, while enquiry-only listings open a WhatsApp availability and pricing question. Customers can then choose a supported delivery location, review the order estimate, and send order details to the shop owner through WhatsApp.
 
 Current delivery fees:
 
