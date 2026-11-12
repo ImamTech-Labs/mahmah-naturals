@@ -103,8 +103,20 @@ document.querySelector("#login-form").addEventListener("submit", async (event) =
   await showWorkspace();
 });
 async function showWorkspace() {
-  const { data: { user } } = await client.auth.getUser();
-  if (!user) return;
+  const { data: { user }, error: userError } = await client.auth.getUser();
+  if (userError || !user) return;
+  const { data: membership, error: membershipError } = await client
+    .from("store_admins")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (membershipError || !membership) {
+    await client.auth.signOut();
+    workspace.hidden = true;
+    loginPanel.hidden = false;
+    notify("This account is not authorised to manage the store. Contact the store owner.", true);
+    return;
+  }
   loginPanel.hidden = true;
   workspace.hidden = false;
   document.querySelector("#session-label").textContent = "Signed in as " + user.email;
