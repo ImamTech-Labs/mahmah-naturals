@@ -30,9 +30,10 @@ Do not add real customer information, credentials, or payment secrets to test fi
 
 ## Automated checks
 
-Run the checkout tests before submitting changes:
+Run the JavaScript shopping-bag tests and Python checkout tests before submitting changes:
 
 ```bash
+node --test tests/cart-storage.test.js
 python -m unittest discover -s tests -v
 ```
 
