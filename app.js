@@ -109,8 +109,45 @@ document.querySelector("#open-cart").addEventListener("click", openCart);
 document.querySelector("#close-cart").addEventListener("click", closeCart);
 document.querySelector("#continue-shopping").addEventListener("click", closeCart);
 drawerBackdrop.addEventListener("click", closeCart);
+function getDrawerFocusableElements() {
+  const selector = 'a[href], area[href], input:not([type="hidden"]), select, textarea, button, iframe, object, embed, [contenteditable="true"], [tabindex]:not([tabindex="-1"])';
+  return [...cartDrawer.querySelectorAll(selector)].filter((element) =>
+    !element.disabled &&
+    !element.hidden &&
+    element.getAttribute("aria-hidden") !== "true" &&
+    element.getClientRects().length > 0
+  );
+}
+
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && cartDrawer.classList.contains("is-open")) closeCart();
+  if (!cartDrawer.classList.contains("is-open")) return;
+
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeCart();
+    return;
+  }
+
+  if (event.key !== "Tab") return;
+
+  const focusableElements = getDrawerFocusableElements();
+  if (!focusableElements.length) {
+    event.preventDefault();
+    cartDrawer.focus();
+    return;
+  }
+
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+  const focusIsInsideDrawer = cartDrawer.contains(document.activeElement);
+
+  if (event.shiftKey && (!focusIsInsideDrawer || document.activeElement === firstElement)) {
+    event.preventDefault();
+    lastElement.focus();
+  } else if (!event.shiftKey && (!focusIsInsideDrawer || document.activeElement === lastElement)) {
+    event.preventDefault();
+    firstElement.focus();
+  }
 });
 
 document.querySelectorAll(".chat-trigger").forEach((button) => {
