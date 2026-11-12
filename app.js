@@ -300,7 +300,7 @@ function renderProducts() {
 
     const tag = document.createElement("span");
     tag.className = "product-tag";
-    tag.textContent = "CHECK STOCK ON WHATSAPP";
+    tag.textContent = product.status === "available" ? "CHECK STOCK ON WHATSAPP" : "CURRENTLY UNAVAILABLE";
     imageWrap.append(tag);
 
     const info = document.createElement("div");
@@ -321,7 +321,8 @@ function renderProducts() {
     button.type = "button";
     button.className = "button button-dark add-to-cart";
     button.dataset.addToCart = product.id;
-    button.textContent = "Add to bag ＋";
+    button.textContent = product.status === "available" ? "Add to bag ＋" : "Unavailable";
+    button.disabled = product.status !== "available";
     buyRow.append(price, button);
     info.append(category, name, description, buyRow);
     card.append(imageWrap, info);
@@ -353,7 +354,7 @@ async function loadSharedCatalogue() {
     const client = window.supabase.createClient(config.url, config.anonKey);
     const { data, error } = await client.from("products").select("id,name,category,price,description,image,status,sort_order").order("sort_order");
     if (error) throw error;
-    if (Array.isArray(data) && data.length) {
+    if (Array.isArray(data)) {
       products = data.map((item) => ({
         id: item.id, name: item.name, category: item.category,
         price: Number(item.price), description: item.description || "",
