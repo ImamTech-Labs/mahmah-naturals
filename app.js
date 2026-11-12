@@ -2,7 +2,7 @@ const cartDrawer = document.querySelector("#cart-drawer");
 const drawerBackdrop = document.querySelector("#drawer-backdrop");
 const toast = document.querySelector("#toast");
 const whatsappNumber = "2348133666348";
-const products = [
+let products = [
   // Catalogue prices are estimates; the shop owner confirms stock on WhatsApp.
   { id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg", description: "A handmade black soap from MahMah Naturals.", status: "available" },
   { id: "shea-black-soap", name: "Shea Black Soap", category: "soaps", price: 6000, image: "", description: "A black soap option for your everyday cleansing routine.", status: "available" },
@@ -345,3 +345,26 @@ document.querySelector("#sort-products").addEventListener("change", updateProduc
 document.querySelector("#year").textContent = new Date().getFullYear();
 renderProducts();
 renderCart();
+
+async function loadSharedCatalogue() {
+  const config = window.MAHMAH_SUPABASE_CONFIG;
+  if (!config?.url || !config?.anonKey || !window.supabase?.createClient) return;
+  try {
+    const client = window.supabase.createClient(config.url, config.anonKey);
+    const { data, error } = await client.from("products").select("id,name,category,price,description,image,status,sort_order").order("sort_order");
+    if (error) throw error;
+    if (Array.isArray(data) && data.length) {
+      products = data.map((item) => ({
+        id: item.id, name: item.name, category: item.category,
+        price: Number(item.price), description: item.description || "",
+        image: item.image || "", status: item.status || "unavailable"
+      }));
+      cart = cart.filter((entry) => products.some((product) => product.id === entry.id && product.status === "available"));
+      renderProducts();
+      renderCart();
+    }
+  } catch (error) {
+    console.error("Shared catalogue could not be loaded; using the bundled catalogue.", error);
+  }
+}
+loadSharedCatalogue();
