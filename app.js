@@ -33,7 +33,7 @@ function loadCart() {
 
 function saveCart() {
   try {
-    saveCart();
+    localStorage.setItem("mahmah-cart", JSON.stringify(cart));
   } catch {
     showToast("Your bag is available for this visit, but could not be saved on this device.");
   }
