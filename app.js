@@ -12,7 +12,34 @@ const deliveryZones = {
   katsina: { name: "Katsina State", fee: 2500 },
   abuja: { name: "Abuja (FCT)", fee: 2000 },
 };
-let cart = JSON.parse(localStorage.getItem("mahmah-cart") || "[]");
+function loadCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("mahmah-cart") || "[]");
+    if (!Array.isArray(saved)) return [];
+
+    return saved
+      .filter((entry) => entry && typeof entry === "object" && !Array.isArray(entry))
+      .map((entry) => {
+        const product = products.find((item) => item.id === entry.id);
+        const quantity = entry.quantity;
+        if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) return null;
+        return { ...product, quantity };
+      })
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function saveCart() {
+  try {
+    saveCart();
+  } catch {
+    showToast("Your bag is available for this visit, but could not be saved on this device.");
+  }
+}
+
+let cart = loadCart();
 let deliveryZone = "";
 let toastTimer;
 
