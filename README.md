@@ -19,7 +19,7 @@ Online Paystack checkout is currently disconnected from the storefront. The earl
 
 ## Automated checks
 
-GitHub Actions runs the checkout validation tests and builds the static storefront on pushes and pull requests to `main`.
+GitHub Actions runs the storefront cart-restoration tests, Python checkout validation tests, and static build on pushes and pull requests to `main`.
 
 To run the tests locally:
 
@@ -33,7 +33,7 @@ To verify the static hosting output:
 python build_static.py
 ```
 
-The automated checkout tests cover the storefront product catalogue, server-calculated totals, supported delivery zones, and invalid cart input.
+The automated JavaScript tests cover malformed and outdated saved shopping-bag data, catalogue-based product details, and invalid quantities. The Python checkout tests cover the product catalogue, server-calculated totals, supported delivery zones, and invalid cart input. The browser loads `cart-storage.js` before `app.js`, and the static build includes both files.
 
 ## Contributing and security
 
