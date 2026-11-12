@@ -17,6 +17,11 @@ Other locations are not available until their delivery fees are supplied.
 
 Online Paystack checkout is currently disconnected from the storefront. The earlier Python payment server is retained for future development, but it is not needed for the WhatsApp order flow.
 
+## Contributing and security
+
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing code changes.
+- Read [SECURITY.md](SECURITY.md) to report a suspected vulnerability privately.
+
 ## Prepare a static website for hosting
 
 The customer-facing site is static HTML, CSS, and JavaScript. Run `python build_static.py` to copy only the storefront files and product/logo images into the `dist` folder. Use `dist` as the output folder when setting up static hosting. This keeps the Python payment server, local environment file, and order database out of the published website.
