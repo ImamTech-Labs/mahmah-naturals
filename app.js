@@ -3,8 +3,12 @@ const drawerBackdrop = document.querySelector("#drawer-backdrop");
 const toast = document.querySelector("#toast");
 const whatsappNumber = "2348133666348";
 const products = [
-  { id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg" },
-  { id: "body-scrub", name: "Body Scrub", category: "body-care", price: 5000, image: "assets/mahmah-body-scrub.jpeg" },
+  { id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg", description: "A handmade black soap from MahMah Naturals.", status: "available" },
+  { id: "body-scrub", name: "Body Scrub", category: "body-care", price: 5000, image: "assets/mahmah-body-scrub.jpeg", description: "A handmade body scrub from MahMah Naturals.", status: "available" },
+  { id: "face-cleanser", name: "Gentle Face Cleanser", category: "skincare", price: null, image: "", description: "A skincare range suggestion. Ask the shop owner to confirm details and availability.", status: "enquire" },
+  { id: "face-moisturiser", name: "Face Moisturiser", category: "skincare", price: null, image: "", description: "A skincare range suggestion. Ask the shop owner to confirm details and availability.", status: "enquire" },
+  { id: "face-oil", name: "Nourishing Face Oil", category: "oils", price: null, image: "", description: "An oil range suggestion. Ask the shop owner to confirm details and availability.", status: "enquire" },
+  { id: "body-oil", name: "Body Oil", category: "oils", price: null, image: "", description: "An oil range suggestion. Ask the shop owner to confirm details and availability.", status: "enquire" },
 ];
 const deliveryZones = {
   kaduna: { name: "Kaduna State (all areas, including Zaria)", fee: 1000 },
@@ -172,15 +176,21 @@ document.querySelector("#delivery-zone").addEventListener("change", (event) => {
   renderCart();
 });
 
-document.querySelectorAll("[data-add-to-cart]").forEach((button) => {
-  button.addEventListener("click", () => {
-    const product = products.find((item) => item.id === button.dataset.addToCart);
+document.querySelector("#product-grid").addEventListener("click", (event) => {
+  const addButton = event.target.closest("[data-add-to-cart]");
+  const enquireButton = event.target.closest("[data-enquire-product]");
+  if (addButton) {
+    const product = products.find((item) => item.id === addButton.dataset.addToCart && item.status === "available");
+    if (!product) return;
     const existing = cart.find((item) => item.id === product.id);
     if (existing) existing.quantity += 1;
     else cart.push({ ...product, quantity: 1 });
     renderCart();
-    showToast(`${product.name} added to your bag.`);
-  });
+    showToast(product.name + " added to your bag.");
+  } else if (enquireButton) {
+    const product = products.find((item) => item.id === enquireButton.dataset.enquireProduct);
+    if (product) openWhatsApp("Hello MahMah Naturals, please let me know whether " + product.name + " is available and its current price.");
+  }
 });
 
 document.querySelector("#cart-items").addEventListener("click", (event) => {
@@ -212,25 +222,92 @@ document.querySelectorAll("[data-category-link]").forEach((link) => {
   });
 });
 
-function updateProducts() {
+function renderProducts() {
   const activeFilter = document.querySelector(".filter-chip.is-active")?.dataset.filter || "all";
   const query = document.querySelector("#product-search").value.trim().toLowerCase();
-  const matches = products.filter((product) => (activeFilter === "all" || product.category === activeFilter) && `${product.name} ${product.category} mahmah`.toLowerCase().includes(query));
-  document.querySelectorAll("[data-product-card]").forEach((card) => {
-    const text = `${card.dataset.name} ${card.dataset.category} mahmah`.toLowerCase();
-    card.hidden = !(text.includes(query) && (activeFilter === "all" || card.dataset.category === activeFilter));
-  });
-  document.querySelector("#results-count").textContent = matches.length ? `${matches.length} ${matches.length === 1 ? "product" : "products"}` : "No products found";
+  const sort = document.querySelector("#sort-products").value;
+  let matches = products.filter((product) =>
+    (activeFilter === "all" || product.category === activeFilter) &&
+    (product.name + " " + product.category + " mahmah " + product.description).toLowerCase().includes(query)
+  );
+
+  if (sort === "name-asc") matches.sort((a, b) => a.name.localeCompare(b.name));
+  if (sort === "price-asc") matches.sort((a, b) => (a.price ?? Number.POSITIVE_INFINITY) - (b.price ?? Number.POSITIVE_INFINITY));
+  if (sort === "price-desc") matches.sort((a, b) => (b.price ?? -1) - (a.price ?? -1));
+
   const grid = document.querySelector("#product-grid");
-  let empty = grid.querySelector(".no-results");
-  if (!matches.length && !empty) {
-    empty = document.createElement("p");
+  grid.replaceChildren();
+  matches.forEach((product) => {
+    const card = document.createElement("article");
+    card.className = "product-card";
+    card.dataset.productCard = "";
+    card.dataset.category = product.category;
+    card.dataset.name = product.name;
+
+    const imageWrap = document.createElement("div");
+    imageWrap.className = "product-image-wrap";
+    if (product.image) {
+      const image = document.createElement("img");
+      image.className = "product-image";
+      image.src = product.image;
+      image.alt = product.name;
+      imageWrap.append(image);
+    } else {
+      const placeholder = document.createElement("div");
+      placeholder.className = "product-placeholder placeholder-" + product.category;
+      placeholder.setAttribute("aria-hidden", "true");
+      placeholder.textContent = product.category === "skincare" ? "SKINCARE" : product.category === "oils" ? "NATURAL OILS" : "BODY CARE";
+      imageWrap.append(placeholder);
+    }
+
+    const tag = document.createElement("span");
+    tag.className = "product-tag";
+    tag.textContent = product.status === "available" ? "MADE BY MAHMAH" : "ENQUIRE FOR AVAILABILITY";
+    imageWrap.append(tag);
+
+    const info = document.createElement("div");
+    info.className = "product-info";
+    const category = document.createElement("p");
+    category.className = "product-category";
+    category.textContent = product.category.replace("-", " ").toUpperCase();
+    const name = document.createElement("h3");
+    name.textContent = product.name;
+    const description = document.createElement("p");
+    description.className = "product-description";
+    description.textContent = product.description;
+    const buyRow = document.createElement("div");
+    buyRow.className = "product-buy-row";
+    const price = document.createElement("strong");
+    price.textContent = product.status === "available" ? formatNaira(product.price) : "Ask for price";
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "button button-dark add-to-cart";
+    if (product.status === "available") {
+      button.dataset.addToCart = product.id;
+      button.textContent = "Add to bag ＋";
+    } else {
+      button.dataset.enquireProduct = product.id;
+      button.textContent = "Enquire ↗";
+    }
+    buyRow.append(price, button);
+    info.append(category, name, description, buyRow);
+    card.append(imageWrap, info);
+    grid.append(card);
+  });
+
+  document.querySelector("#results-count").textContent = matches.length + " " + (matches.length === 1 ? "product" : "products");
+  if (!matches.length) {
+    const empty = document.createElement("p");
     empty.className = "no-results";
     empty.textContent = "No products match this search yet.";
     grid.append(empty);
-  } else if (matches.length && empty) empty.remove();
+  }
 }
 
+function updateProducts() {
+  renderProducts();
+}
 document.querySelector("#product-search").addEventListener("input", updateProducts);
+document.querySelector("#sort-products").addEventListener("change", updateProducts);
 document.querySelector("#year").textContent = new Date().getFullYear();
 renderCart();
