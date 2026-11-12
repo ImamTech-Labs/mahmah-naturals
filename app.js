@@ -14,18 +14,7 @@ const deliveryZones = {
 };
 function loadCart() {
   try {
-    const saved = JSON.parse(localStorage.getItem("mahmah-cart") || "[]");
-    if (!Array.isArray(saved)) return [];
-
-    return saved
-      .filter((entry) => entry && typeof entry === "object" && !Array.isArray(entry))
-      .map((entry) => {
-        const product = products.find((item) => item.id === entry.id);
-        const quantity = entry.quantity;
-        if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) return null;
-        return { ...product, quantity };
-      })
-      .filter(Boolean);
+    return window.MahMahCartStorage.restoreCart(localStorage.getItem("mahmah-cart"), products);
   } catch {
     return [];
   }
