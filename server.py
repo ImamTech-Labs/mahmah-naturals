@@ -18,7 +18,10 @@ ROOT = Path(__file__).resolve().parent
 ENV_FILE = ROOT / ".env"
 DATABASE_FILE = ROOT / "orders.sqlite3"
 PORT = int(os.environ.get("PORT", "4174"))
-PRODUCTS = {"black-soap": {"name": "Homemade Black Soap", "price": 5000}}
+PRODUCTS = {
+    "black-soap": {"name": "Homemade Black Soap", "price": 5000},
+    "body-scrub": {"name": "Body Scrub", "price": 5000},
+}
 DELIVERY_ZONES = {
     "kaduna": {"name": "Kaduna State (all areas, including Zaria)", "fee": 1000},
     "kano": {"name": "Kano State", "fee": 1500},
@@ -101,6 +104,29 @@ def paystack_request(path: str, method: str, payload: dict | None = None) -> dic
     return result
 
 
+def calculate_order(items: object, delivery_zone: str) -> tuple[int, list[dict], dict]:
+    """Validate a checkout request and calculate its server-trusted subtotal."""
+    if not isinstance(items, list) or not items or len(items) > 20:
+        raise ValueError("Your bag is empty or contains too many items.")
+    zone = DELIVERY_ZONES.get(delivery_zone)
+    if not zone:
+        raise ValueError("Choose one of the available delivery locations.")
+
+    subtotal = 0
+    summary = []
+    for item in items:
+        if not isinstance(item, dict):
+            raise ValueError("The items in your bag could not be checked.")
+        product = PRODUCTS.get(str(item.get("id", "")))
+        quantity = item.get("quantity")
+        if not product or isinstance(quantity, bool) or not isinstance(quantity, int) or not 1 <= quantity <= 99:
+            raise ValueError("An item in your bag could not be checked. Please refresh and try again.")
+        subtotal += product["price"] * quantity
+        summary.append({"name": product["name"], "quantity": quantity})
+
+    return subtotal, summary, zone
+
+
 def initialise_database() -> None:
     with sqlite3.connect(DATABASE_FILE) as database:
         database.execute(
@@ -138,26 +164,11 @@ class StorefrontHandler(SimpleHTTPRequestHandler):
                 raise ValueError("The checkout details are invalid. Please try again.")
             body = json.loads(self.rfile.read(content_length).decode("utf-8"))
             email = str(body.get("email", "")).strip()
-            items = body.get("items")
-            zone = DELIVERY_ZONES.get(str(body.get("deliveryZone", "")))
-            if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
+            if not re.fullmatch(r"[^\\s@]+@[^\\s@]+\\.[^\\s@]+", email):
                 raise ValueError("Enter a valid email address for your receipt.")
-            if not isinstance(items, list) or not items or len(items) > 20:
-                raise ValueError("Your bag is empty. Add a product before paying.")
-            if not zone:
-                raise ValueError("Choose one of the available delivery locations.")
-
-            subtotal = 0
-            summary = []
-            for item in items:
-                if not isinstance(item, dict):
-                    raise ValueError("The items in your bag could not be checked.")
-                product = PRODUCTS.get(str(item.get("id", "")))
-                quantity = item.get("quantity")
-                if not product or isinstance(quantity, bool) or not isinstance(quantity, int) or not 1 <= quantity <= 99:
-                    raise ValueError("An item in your bag could not be checked. Please refresh and try again.")
-                subtotal += product["price"] * quantity
-                summary.append({"name": product["name"], "quantity": quantity})
+            subtotal, summary, zone = calculate_order(
+                body.get("items"), str(body.get("deliveryZone", ""))
+            )
 
             total_kobo = (subtotal + zone["fee"]) * 100
             callback_url = os.environ.get(
