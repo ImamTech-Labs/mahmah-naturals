@@ -28,6 +28,22 @@ Do not add real customer information, credentials, or payment secrets to test fi
 - Do not commit generated output, local databases, or private environment files.
 - Use clear, descriptive commit messages.
 
+## Automated checks
+
+Run the checkout tests before submitting changes:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+Check the static storefront build:
+
+```bash
+python build_static.py
+```
+
+GitHub Actions runs these checks automatically for pushes and pull requests targeting `main`.
+
 ## Before opening a pull request
 
 - Test the changed pages in a browser.
