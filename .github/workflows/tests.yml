@@ -17,6 +17,14 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v6
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Run shopping bag restoration tests
+        run: node --test tests/cart-storage.test.js
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
