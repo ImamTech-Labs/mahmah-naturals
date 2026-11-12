@@ -123,15 +123,26 @@
       <div class="drawer-empty"><div class="empty-catalog-mark" aria-hidden="true"><span>♡</span></div><h3>Your bag is taking a little rest.</h3><p>Add a product to start your order.</p><button class="button button-dark" id="continue-shopping" type="button">Continue browsing</button></div>
       <div class="drawer-items" id="cart-items"></div>
       <div class="drawer-footer">
-        <label class="delivery-label" for="delivery-zone">Delivery location</label>
-        <select class="delivery-select" id="delivery-zone">
-          <option value="">Choose an available location</option>
-          <option value="kaduna">Kaduna State — all areas, including Zaria</option>
-          <option value="kano">Kano State</option>
-          <option value="katsina">Katsina State</option>
-          <option value="abuja">Abuja (FCT)</option>
-        </select>
-        <span class="delivery-availability">For now, delivery is available only in these locations.</span>
+        <div class="checkout-details">
+          <p class="checkout-section-title">Your details</p>
+          <label class="delivery-label" for="customer-name">Full name</label>
+          <input class="checkout-input" id="customer-name" name="name" type="text" autocomplete="name" maxlength="80" placeholder="Name for the order" required />
+          <label class="delivery-label" for="customer-phone">Phone number</label>
+          <input class="checkout-input" id="customer-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="24" placeholder="e.g. 08012345678" required />
+          <label class="delivery-label" for="delivery-zone">Delivery location</label>
+          <select class="delivery-select" id="delivery-zone" required>
+            <option value="">Choose an available location</option>
+            <option value="kaduna">Kaduna State — all areas, including Zaria</option>
+            <option value="kano">Kano State</option>
+            <option value="katsina">Katsina State</option>
+            <option value="abuja">Abuja (FCT)</option>
+          </select>
+          <label class="delivery-label" for="delivery-address">Delivery address</label>
+          <textarea class="checkout-input checkout-textarea" id="delivery-address" name="address" autocomplete="street-address" rows="2" maxlength="300" placeholder="Area/LGA, street and nearby landmark" required></textarea>
+          <label class="delivery-label" for="order-note">Additional note (optional)</label>
+          <textarea class="checkout-input checkout-textarea" id="order-note" name="note" rows="2" maxlength="300" placeholder="Any useful delivery instructions"></textarea>
+        </div>
+        <span class="delivery-availability">Delivery is currently available only in the locations listed above. The owner will confirm stock and final details on WhatsApp.</span>
         <div class="subtotal-row"><span>Subtotal</span><strong id="cart-subtotal">₦0</strong></div>
         <div class="subtotal-row"><span>Delivery fee</span><strong id="cart-delivery">Choose a location</strong></div>
         <div class="subtotal-row total-row"><span>Estimated total</span><strong id="cart-total">₦0</strong></div>
