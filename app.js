@@ -60,7 +60,7 @@ function renderCart() {
     <div class="cart-item">
       <img src="${item.image}" alt="" />
       <div class="cart-item-copy"><strong>${item.name}</strong><span>${formatNaira(item.price)}</span>
-        <div class="quantity-control"><button type="button" data-quantity="-1" aria-label="Remove one">−</button><span>${item.quantity}</span><button type="button" data-quantity="1" aria-label="Add one">＋</button></div>
+        <div class="quantity-control"><button type="button" data-quantity="-1" data-item-id="${item.id}" aria-label="Remove one ${item.name}">−</button><span>${item.quantity}</span><button type="button" data-quantity="1" data-item-id="${item.id}" aria-label="Add one ${item.name}">＋</button></div>
       </div>
       <button class="remove-item" type="button" data-remove="${item.id}" aria-label="Remove ${item.name}">×</button>
     </div>`).join("");
@@ -135,7 +135,8 @@ document.querySelector("#cart-items").addEventListener("click", (event) => {
   const quantityChange = Number(event.target.dataset.quantity);
   if (removeId) cart = cart.filter((item) => item.id !== removeId);
   else if (quantityChange) {
-    const item = cart[0];
+    const itemId = event.target.dataset.itemId;
+    const item = cart.find((entry) => entry.id === itemId);
     if (item) item.quantity += quantityChange;
     cart = cart.filter((entry) => entry.quantity > 0);
   } else return;
