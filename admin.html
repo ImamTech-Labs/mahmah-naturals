@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#fbf8f0" />
+  <title>Owner dashboard | MahMah Naturals</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin.js" defer></script>
+</head>
+<body class="admin-page">
+  <header class="site-header admin-header"><a class="brand" href="index.html"><img src="assets/mahmah-naturals-logo.jpeg" alt="MahMah Naturals" /></a><a class="text-button" href="index.html">View storefront ↗</a></header>
+  <main class="admin-main">
+    <section class="admin-intro"><p class="eyebrow">PRIVATE STORE MANAGEMENT</p><h1>Owner dashboard</h1><p>Manage the products customers see in the MahMah Naturals shop.</p></section>
+    <section class="admin-panel" id="login-panel">
+      <h2>Owner sign in</h2><p>Sign in with the owner account created in your Supabase project.</p>
+      <form id="login-form" class="admin-form">
+        <label>Email address<input id="login-email" type="email" autocomplete="username" required /></label>
+        <label>Password<input id="login-password" type="password" autocomplete="current-password" required /></label>
+        <button class="button button-dark" type="submit">Sign in</button>
+      </form>
+    </section>
+    <section class="admin-workspace" id="workspace" hidden>
+      <div class="admin-toolbar"><div><h2>Product catalogue</h2><p id="session-label"></p></div><button class="button button-outline" id="sign-out" type="button">Sign out</button></div>
+      <div class="admin-panel">
+        <h3 id="editor-title">Add a product</h3>
+        <form id="product-form" class="admin-form">
+          <input id="product-id" type="hidden" />
+          <label>Product name<input id="product-name" maxlength="100" required /></label>
+          <label>Collection<select id="product-category" required><option value="skincare">Skincare</option><option value="body-care">Body care</option><option value="soaps">Soaps</option><option value="oils">Oils</option></select></label>
+          <label>Price (₦)<input id="product-price" type="number" min="1" max="10000000" step="1" required /></label>
+          <label>Product photo URL (optional)<input id="product-image" type="url" maxlength="500" placeholder="https://..." /></label>
+          <label class="admin-full">Description<textarea id="product-description" rows="3" maxlength="500"></textarea></label>
+          <label>Availability<select id="product-status"><option value="available">Available to order</option><option value="unavailable">Out of stock / unavailable</option></select></label>
+          <div class="admin-actions"><button class="button button-dark" type="submit">Save product</button><button class="button button-outline" id="cancel-edit" type="button">Clear form</button></div>
+        </form>
+        <p class="admin-hint">Changes are saved to the shared catalogue. Mark an item unavailable when it is out of stock; it will no longer be offered for ordering.</p>
+      </div>
+      <div class="admin-panel"><div class="admin-toolbar"><h3>Current products</h3><span id="product-total"></span></div><div id="admin-product-list" class="admin-product-list" aria-live="polite"></div></div>
+    </section>
+    <p class="admin-message" id="admin-message" role="status" aria-live="polite"></p>
+  </main>
+</body>
+</html>
