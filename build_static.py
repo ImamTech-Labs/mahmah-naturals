@@ -10,7 +10,7 @@ OUTPUT = ROOT / "dist"
 
 def main() -> None:
     OUTPUT.mkdir(exist_ok=True)
-    for name in ("index.html", "styles.css", "cart-storage.js", "app.js"):
+    for name in ("index.html", "styles.css", "cart-storage.js", "app.js", "supabase-config.js", "admin.html", "admin.js", "admin.css"):
         shutil.copy2(ROOT / name, OUTPUT / name)
     shutil.copytree(ROOT / "assets", OUTPUT / "assets", dirs_exist_ok=True)
 
