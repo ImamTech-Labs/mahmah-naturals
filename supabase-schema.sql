@@ -69,5 +69,5 @@ insert into public.products (id,name,category,price,description,image,status,sor
 ('face-oil','Nourishing Face Oil','oils',6000,'A facial oil option. Ask the owner about its ingredients and intended use.','','unavailable',13),
 ('body-oil','Body Oil','oils',6000,'An oil option for your body-care routine.','','unavailable',14),
 ('shea-oil','Shea Oil','oils',6000,'A shea-based oil listing. Confirm ingredients with the owner.','','unavailable',15),
-('body-oil-large','Body Oil — Large','oils',8500,'A larger-size body oil option.','','available',16)
+('body-oil-large','Body Oil — Large','oils',8500,'A larger-size body oil option.','','unavailable',16)
 on conflict (id) do nothing;
