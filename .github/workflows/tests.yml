@@ -22,8 +22,10 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Check storefront JavaScript syntax
-        run: node --check app.js
+      - name: Check storefront and dashboard JavaScript syntax
+        run: |
+          node --check app.js
+          node --check admin.js
 
       - name: Run shopping bag restoration tests
         run: node --test tests/cart-storage.test.js
@@ -43,6 +45,9 @@ jobs:
         run: |
           test -f dist/index.html
           test -f dist/app.js
+          test -f dist/admin.html
+          test -f dist/admin.js
+          test -f dist/supabase-config.js
           test -d dist/assets
           test ! -e dist/server.py
           test ! -e dist/.env
