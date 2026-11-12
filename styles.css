@@ -232,3 +232,12 @@ body.drawer-open { overflow: hidden; }
 .product-placeholder { display: grid; place-items: center; width: 100%; height: 100%; color: #806b3d; background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.82), transparent 44%), linear-gradient(145deg,#eee6d4,#d9cba9); font-family: var(--serif); font-size: clamp(20px,2.5vw,31px); font-style: italic; letter-spacing: .04em; }
 .placeholder-oils { background: radial-gradient(circle at 50% 42%,rgba(255,255,255,.78),transparent 43%),linear-gradient(145deg,#e8e4cf,#c8c39c); }
 .placeholder-skincare { background: radial-gradient(circle at 50% 42%,rgba(255,255,255,.8),transparent 43%),linear-gradient(145deg,#f1e5dc,#d9c2b1); }
+\n
+/* Checkout contact and delivery details */
+.checkout-details { display: grid; gap: 8px; margin: 18px 0 14px; }
+.checkout-section-title { margin: 0 0 5px; font-family: var(--serif); font-size: 21px; }
+.checkout-input { width: 100%; min-height: 43px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 2px; background: #fffdfa; color: var(--ink); font: inherit; font-size: 12px; }
+.checkout-input:focus, .delivery-select:focus { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+.checkout-textarea { min-height: 68px; resize: vertical; }
+.checkout-details .delivery-label { margin-top: 5px; }
+@media (max-width: 700px) { .checkout-input { font-size: 16px; } }
