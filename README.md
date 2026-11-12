@@ -66,3 +66,18 @@ The `.env` file and local `orders.sqlite3` database are excluded from Git. Never
 ### WhatsApp checkout details
 
 The shopping bag includes quantity controls, remove-item actions, a delivery-zone selector, customer name and phone fields, a delivery address, and an optional note. The checkout validates the required details before opening WhatsApp with an itemised order, subtotal, delivery fee, and estimated total. The customer is asked to wait for the owner to confirm stock and the final amount. No payment is collected by the website.
+
+## Owner dashboard (Supabase setup required)
+
+The private owner dashboard is at `admin.html`. It supports owner sign-in, listing products, adding/editing products, changing prices, marking products available/unavailable, and deleting listings. The public storefront reads the shared catalogue from Supabase when configured and falls back to the bundled catalogue if the service is not configured or is temporarily unavailable.
+
+To activate shared management:
+
+1. Create a Supabase project and open its SQL Editor.
+2. Run the complete `supabase-schema.sql` script.
+3. In Supabase Authentication, create the owner's email/password account. Keep public sign-ups disabled.
+4. Copy the owner's Auth user UUID and run the admin-membership INSERT shown at the end of the SQL script, replacing the placeholder with that UUID.
+5. In Supabase Project Settings > API, copy the Project URL and anon/public key into `supabase-config.js`. Never use a service-role or secret key in website files.
+6. Deploy the updated site. Open `/admin.html` and sign in with the owner's account.
+
+The database enforces row-level security: visitors can read the product catalogue, but only the UUID explicitly added to `store_admins` can create, edit, or delete products. The dashboard is not fully active until the Supabase project, owner account, SQL setup, and public client settings have been configured. The dashboard does not manage orders or payments.
