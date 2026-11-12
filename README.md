@@ -62,3 +62,7 @@ The `.env` file and local `orders.sqlite3` database are excluded from Git. Never
 - `build_static.py`: prepares the public static hosting folder.
 - `server.py`, `payment-return.html`, `payment-return.js`: retained local Test Mode payment work; not part of the static customer site.
 - `.env.example`: safe settings template for future local Test Mode work.
+
+### WhatsApp checkout details
+
+The shopping bag includes quantity controls, remove-item actions, a delivery-zone selector, customer name and phone fields, a delivery address, and an optional note. The checkout validates the required details before opening WhatsApp with an itemised order, subtotal, delivery fee, and estimated total. The customer is asked to wait for the owner to confirm stock and the final amount. No payment is collected by the website.
