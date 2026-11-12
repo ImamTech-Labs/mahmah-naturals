@@ -2,9 +2,18 @@
 
 An online storefront for MahMah Naturals, featuring skincare, body care, soaps, and oils.
 
-## Current customer order flow
+## Current customer catalogue and order flow
 
-The storefront has two confirmed, orderable products: MahMah Naturals' homemade black soap and body scrub, each at ₦5,000. It also displays four proposed skincare and oil catalogue entries as enquiry-only listings; their stock and prices must be confirmed by the shop owner before they can be ordered. Customers can search, filter, and sort the catalogue. Confirmed products can be added to the bag, while enquiry-only listings open a WhatsApp availability and pricing question. Customers can then choose a supported delivery location, review the order estimate, and send order details to the shop owner through WhatsApp.
+The storefront currently lists 16 products across four collections, with at least four products in each collection:
+
+- **Skincare:** Gentle Face Cleanser, Face Moisturiser, Facial Toner, Face Serum
+- **Body care:** Body Scrub, Body Lotion, Body Butter, Body Scrub — Large
+- **Soaps:** Homemade Black Soap, Shea Black Soap, Herbal Black Soap, Homemade Black Soap — Large
+- **Oils:** Nourishing Face Oil, Body Oil, Shea Oil, Body Oil — Large
+
+New standard-size listings are priced at ₦6,000 and selected large-size listings at ₦8,500. The two previously listed handmade products retain their existing ₦5,000 prices. These are catalogue prices; **the shop owner confirms actual stock and order acceptance on WhatsApp**. Customers can search, filter, and sort the catalogue, add listed products to their bag, choose a supported delivery location, review the estimate, and send the order details to the owner for confirmation.
+
+Product descriptions are intentionally general. The shop owner should verify each product's actual name, ingredients, size, photo, and price before treating the listing as a final product specification. No skincare results or medical benefits are promised.
 
 Current delivery fees:
 
