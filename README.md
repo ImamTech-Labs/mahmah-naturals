@@ -11,7 +11,7 @@ The storefront currently lists 16 products across four collections, with at leas
 - **Soaps:** Homemade Black Soap, Shea Black Soap, Herbal Black Soap, Homemade Black Soap — Large
 - **Oils:** Nourishing Face Oil, Body Oil, Shea Oil, Body Oil — Large
 
-New standard-size listings are priced at ₦6,000 and selected large-size listings at ₦8,500. The two previously listed handmade products retain their existing ₦5,000 prices. These are catalogue prices; **the shop owner confirms actual stock and order acceptance on WhatsApp**. Customers can search, filter, and sort the catalogue, add listed products to their bag, choose a supported delivery location, review the estimate, and send the order details to the owner for confirmation.
+New standard-size listings are priced at ₦6,000 and selected large-size listings at ₦8,500. The two previously listed handmade products retain their existing ₦5,000 prices. These are proposed catalogue prices; **only the two previously listed handmade products are initially marked available. All newly suggested listings start unavailable until the shop owner verifies the real product, size, photo, price, and stock in the owner dashboard.** The shop owner confirms actual stock and order acceptance on WhatsApp. Customers can search, filter, and sort the catalogue, add listed products to their bag, choose a supported delivery location, review the estimate, and send the order details to the owner for confirmation.
 
 Product descriptions are intentionally general. The shop owner should verify each product's actual name, ingredients, size, photo, and price before treating the listing as a final product specification. No skincare results or medical benefits are promised.
 
@@ -80,4 +80,4 @@ To activate shared management:
 5. In Supabase Project Settings > API, copy the Project URL and anon/public key into `supabase-config.js`. Never use a service-role or secret key in website files.
 6. Deploy the updated site. Open `/admin.html` and sign in with the owner's account.
 
-The database enforces row-level security: visitors can read the product catalogue, but only the UUID explicitly added to `store_admins` can create, edit, or delete products. The dashboard is not fully active until the Supabase project, owner account, SQL setup, and public client settings have been configured. The dashboard does not manage orders or payments.
+The database enforces row-level security: visitors can read the product catalogue, but only the UUID explicitly added to `store_admins` can create, edit, or delete products. The dashboard checks this membership before showing the management workspace. Newly suggested products start unavailable until the owner verifies them. The dashboard is not fully active until the Supabase project, owner account, SQL setup, and public client settings have been configured. The dashboard does not manage orders or payments.
