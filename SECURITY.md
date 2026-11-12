@@ -2,20 +2,29 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+MahMah Naturals is an actively maintained project. Security fixes are applied to the latest version on the `main` branch.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Version | Supported |
+| --- | --- |
+| Latest version on `main` | Yes |
+| Older revisions | No |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+Please do not publish security vulnerabilities in public issues.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Use GitHub's private vulnerability reporting feature for this repository if it is enabled. If it is unavailable, contact the repository maintainers privately through the ImamTech-Labs GitHub organization.
+
+Include:
+- A clear description of the issue and its potential impact.
+- Steps to reproduce the issue, where safe to do so.
+- Any relevant affected files or versions.
+
+Please allow maintainers reasonable time to investigate and coordinate a fix before publicly disclosing the issue.
+
+## Security Notes
+
+- Never commit `.env` files, passwords, API tokens, or payment-provider secret keys.
+- Use `.env.example` only for placeholder configuration values.
+- Do not place private payment credentials in browser-side JavaScript.
+- Report suspected exposure of credentials immediately so they can be revoked and rotated.
