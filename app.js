@@ -310,4 +310,5 @@ function updateProducts() {
 document.querySelector("#product-search").addEventListener("input", updateProducts);
 document.querySelector("#sort-products").addEventListener("change", updateProducts);
 document.querySelector("#year").textContent = new Date().getFullYear();
+renderProducts();
 renderCart();
