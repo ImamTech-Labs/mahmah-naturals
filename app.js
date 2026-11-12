@@ -3,12 +3,23 @@ const drawerBackdrop = document.querySelector("#drawer-backdrop");
 const toast = document.querySelector("#toast");
 const whatsappNumber = "2348133666348";
 const products = [
+  // Catalogue prices are estimates; the shop owner confirms stock on WhatsApp.
   { id: "black-soap", name: "Homemade Black Soap", category: "soaps", price: 5000, image: "assets/mahmah-homemade-black-soap.jpeg", description: "A handmade black soap from MahMah Naturals.", status: "available" },
+  { id: "shea-black-soap", name: "Shea Black Soap", category: "soaps", price: 6000, image: "", description: "A black soap option for your everyday cleansing routine.", status: "available" },
+  { id: "herbal-black-soap", name: "Herbal Black Soap", category: "soaps", price: 6000, image: "", description: "A herbal-inspired soap option. Ask the owner about its ingredients.", status: "available" },
+  { id: "black-soap-large", name: "Homemade Black Soap — Large", category: "soaps", price: 8500, image: "", description: "A larger-size option for your routine.", status: "available" },
   { id: "body-scrub", name: "Body Scrub", category: "body-care", price: 5000, image: "assets/mahmah-body-scrub.jpeg", description: "A handmade body scrub from MahMah Naturals.", status: "available" },
-  { id: "face-cleanser", name: "Gentle Face Cleanser", category: "skincare", price: null, image: "", description: "A skincare range suggestion. Ask the shop owner to confirm details and availability.", status: "enquire" },
-  { id: "face-moisturiser", name: "Face Moisturiser", category: "skincare", price: null, image: "", description: "A skincare range suggestion. Ask the shop owner to confirm details and availability.", status: "enquire" },
-  { id: "face-oil", name: "Nourishing Face Oil", category: "oils", price: null, image: "", description: "An oil range suggestion. Ask the shop owner to confirm details and availability.", status: "enquire" },
-  { id: "body-oil", name: "Body Oil", category: "oils", price: null, image: "", description: "An oil range suggestion. Ask the shop owner to confirm details and availability.", status: "enquire" },
+  { id: "body-lotion", name: "Body Lotion", category: "body-care", price: 6000, image: "", description: "An everyday body-care option. Ask the owner about available variants.", status: "available" },
+  { id: "body-butter", name: "Body Butter", category: "body-care", price: 6000, image: "", description: "A rich-feel body moisturising option.", status: "available" },
+  { id: "body-scrub-large", name: "Body Scrub — Large", category: "body-care", price: 8500, image: "", description: "A larger-size body scrub option.", status: "available" },
+  { id: "face-cleanser", name: "Gentle Face Cleanser", category: "skincare", price: 6000, image: "", description: "A gentle daily face-cleansing option. Ask the owner about its ingredients and suitability.", status: "available" },
+  { id: "face-moisturiser", name: "Face Moisturiser", category: "skincare", price: 6000, image: "", description: "An everyday facial moisturising option.", status: "available" },
+  { id: "face-toner", name: "Facial Toner", category: "skincare", price: 6000, image: "", description: "A facial-care option to ask the owner about before adding to your routine.", status: "available" },
+  { id: "face-serum", name: "Face Serum", category: "skincare", price: 8500, image: "", description: "A facial-care product listing. Ask the owner about ingredients and use.", status: "available" },
+  { id: "face-oil", name: "Nourishing Face Oil", category: "oils", price: 6000, image: "", description: "A facial oil option. Ask the owner about its ingredients and intended use.", status: "available" },
+  { id: "body-oil", name: "Body Oil", category: "oils", price: 6000, image: "", description: "An oil option for your body-care routine.", status: "available" },
+  { id: "shea-oil", name: "Shea Oil", category: "oils", price: 6000, image: "", description: "A shea-based oil listing. Confirm ingredients with the owner.", status: "available" },
+  { id: "body-oil-large", name: "Body Oil — Large", category: "oils", price: 8500, image: "", description: "A larger-size body oil option.", status: "available" },
 ];
 const deliveryZones = {
   kaduna: { name: "Kaduna State (all areas, including Zaria)", fee: 1000 },
@@ -262,7 +273,7 @@ function renderProducts() {
 
     const tag = document.createElement("span");
     tag.className = "product-tag";
-    tag.textContent = product.status === "available" ? "MADE BY MAHMAH" : "ENQUIRE FOR AVAILABILITY";
+    tag.textContent = "CHECK STOCK ON WHATSAPP";
     imageWrap.append(tag);
 
     const info = document.createElement("div");
@@ -278,17 +289,12 @@ function renderProducts() {
     const buyRow = document.createElement("div");
     buyRow.className = "product-buy-row";
     const price = document.createElement("strong");
-    price.textContent = product.status === "available" ? formatNaira(product.price) : "Ask for price";
+    price.textContent = formatNaira(product.price);
     const button = document.createElement("button");
     button.type = "button";
     button.className = "button button-dark add-to-cart";
-    if (product.status === "available") {
-      button.dataset.addToCart = product.id;
-      button.textContent = "Add to bag ＋";
-    } else {
-      button.dataset.enquireProduct = product.id;
-      button.textContent = "Enquire ↗";
-    }
+    button.dataset.addToCart = product.id;
+    button.textContent = "Add to bag ＋";
     buyRow.append(price, button);
     info.append(category, name, description, buyRow);
     card.append(imageWrap, info);
