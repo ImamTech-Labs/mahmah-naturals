@@ -15,3 +15,33 @@
 .admin-message { min-height:24px; color:#28734d; font-size:13px; }.admin-message.is-error { color:#a33b30; }
 [hidden] { display:none !important; }
 @media(max-width:700px) { .admin-main { margin-top:35px; }.admin-panel { padding:18px; }.admin-form { grid-template-columns:1fr; }.admin-full { grid-column:auto; }.admin-product-row { grid-template-columns:1fr; gap:9px; }.admin-row-actions { width:100%; }.admin-toolbar { align-items:flex-start; }.admin-header { padding:12px 18px; } }
+
+
+/* Customer order management */
+.order-filters { display:flex; align-items:center; gap:12px; margin:14px 0; font-size:13px; }
+.order-filters select, .admin-order-status-select { min-height:38px; padding:8px 10px; border:1px solid var(--line); border-radius:3px; background:#fffdfa; color:var(--ink); font:inherit; }
+.admin-order-list { display:grid; gap:14px; }
+.admin-order-card { display:grid; gap:12px; padding:16px; border:1px solid var(--line); background:#fffdfa; }
+.admin-order-heading, .admin-order-heading > div:first-child { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.admin-order-heading > div:first-child { align-items:flex-start; flex-direction:column; gap:3px; }
+.admin-order-heading strong { font-size:14px; }
+.admin-order-heading span, .admin-order-customer span { color:var(--muted); font-size:12px; }
+.admin-order-customer { display:grid; gap:4px; }
+.admin-order-items { display:grid; gap:5px; margin:0; padding-left:19px; font-size:13px; }
+.admin-order-total { margin:0; font-size:13px; font-weight:700; }
+.admin-order-note { margin:0; color:var(--muted); font-size:12px; }
+.admin-order-actions { display:flex; align-items:end; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.admin-order-actions label { display:grid; gap:5px; font-size:12px; }
+.admin-order-actions .button { text-decoration:none; }
+.admin-status.pending { background:#f4ead4; color:#72551c; }
+.admin-status.confirmed { background:#e4eee0; color:#365c34; }
+.admin-status.processing { background:#e7edf5; color:#35516f; }
+.admin-status.dispatched { background:#eee6f5; color:#61417b; }
+.admin-status.delivered { background:#dfeee6; color:#285b43; }
+.admin-status.cancelled { background:#f5e4e1; color:#8a3f35; }
+@media (max-width:600px) {
+  .order-filters { align-items:stretch; flex-direction:column; }
+  .admin-order-heading { align-items:flex-start; }
+  .admin-order-actions { align-items:stretch; flex-direction:column; }
+  .admin-order-actions .button { text-align:center; }
+}
