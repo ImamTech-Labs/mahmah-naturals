@@ -22,18 +22,23 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Check storefront and dashboard JavaScript syntax
+      - name: Check JavaScript syntax
         run: |
           node --check app.js
           node --check admin.js
+          node --check cart-storage.js
+          node --check payment-return.js
 
-      - name: Run shopping bag restoration tests
+      - name: Run shopping bag tests
         run: node --test tests/cart-storage.test.js
 
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+
+      - name: Check Python syntax
+        run: python -m py_compile server.py build_static.py
 
       - name: Run checkout validation tests
         run: python -m unittest discover -s tests -v
@@ -45,9 +50,13 @@ jobs:
         run: |
           test -f dist/index.html
           test -f dist/app.js
+          test -f dist/cart-storage.js
           test -f dist/admin.html
           test -f dist/admin.js
           test -f dist/supabase-config.js
+          test -f dist/payment-return.html
+          test -f dist/payment-return.js
           test -d dist/assets
           test ! -e dist/server.py
           test ! -e dist/.env
+          test ! -e dist/orders.sqlite3
