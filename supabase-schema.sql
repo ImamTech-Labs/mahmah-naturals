@@ -71,3 +71,52 @@ insert into public.products (id,name,category,price,description,image,status,sor
 ('shea-oil','Shea Oil','oils',6000,'A shea-based oil listing. Confirm ingredients with the owner.','','unavailable',15),
 ('body-oil-large','Body Oil — Large','oils',8500,'A larger-size body oil option.','','unavailable',16)
 on conflict (id) do nothing;
+
+
+-- Customer orders: customers may submit orders, but only store admins can read or update them.
+create table if not exists public.orders (
+  id uuid primary key default gen_random_uuid(),
+  customer_name text not null check (char_length(trim(customer_name)) between 2 and 120),
+  customer_phone text not null check (char_length(trim(customer_phone)) between 7 and 30),
+  delivery_zone text not null check (delivery_zone in ('kaduna','kano','katsina','abuja')),
+  delivery_address text not null check (char_length(trim(delivery_address)) between 8 and 500),
+  items jsonb not null check (jsonb_typeof(items) = 'array' and jsonb_array_length(items) between 1 and 50),
+  subtotal integer not null check (subtotal > 0),
+  delivery_fee integer not null check (delivery_fee >= 0),
+  total integer not null check (total = subtotal + delivery_fee),
+  note text not null default '' check (char_length(note) <= 300),
+  status text not null default 'pending' check (status in ('pending','confirmed','processing','dispatched','delivered','cancelled')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.orders enable row level security;
+grant insert on public.orders to anon, authenticated;
+grant select, update on public.orders to authenticated;
+
+drop policy if exists "Customers can submit orders" on public.orders;
+create policy "Customers can submit orders" on public.orders
+  for insert to anon, authenticated
+  with check (
+    status = 'pending'
+    and total = subtotal + delivery_fee
+    and jsonb_typeof(items) = 'array'
+    and jsonb_array_length(items) between 1 and 50
+  );
+
+drop policy if exists "Store admins can view orders" on public.orders;
+create policy "Store admins can view orders" on public.orders
+  for select to authenticated
+  using (exists (select 1 from public.store_admins where user_id = auth.uid()));
+
+drop policy if exists "Store admins can update orders" on public.orders;
+create policy "Store admins can update orders" on public.orders
+  for update to authenticated
+  using (exists (select 1 from public.store_admins where user_id = auth.uid()))
+  with check (
+    exists (select 1 from public.store_admins where user_id = auth.uid())
+    and status in ('pending','confirmed','processing','dispatched','delivered','cancelled')
+  );
+
+create index if not exists orders_created_at_idx on public.orders (created_at desc);
+create index if not exists orders_status_idx on public.orders (status);
