@@ -177,7 +177,36 @@ document.querySelectorAll(".chat-trigger").forEach((button) => {
   button.addEventListener("click", () => openWhatsApp("Hello MahMah Naturals, I’d like to ask about your products and availability."));
 });
 
-document.querySelector("#checkout-button").addEventListener("click", () => {
+async function saveOrderToDashboard() {
+  const config = window.MAHMAH_SUPABASE_CONFIG;
+  if (!config?.url || !config?.anonKey || !window.supabase?.createClient) {
+    return { saved: false, reason: "Order database is not configured yet." };
+  }
+  const client = window.supabase.createClient(config.url, config.anonKey);
+  const delivery = selectedDelivery();
+  const { error } = await client.from("orders").insert({
+    customer_name: document.querySelector("#customer-name").value.trim(),
+    customer_phone: document.querySelector("#customer-phone").value.trim(),
+    delivery_zone: deliveryZone,
+    delivery_address: document.querySelector("#delivery-address").value.trim(),
+    items: cart.map((item) => ({
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity,
+      unit_price: Number(item.price),
+      line_total: Number(item.price) * item.quantity
+    })),
+    subtotal: cartSubtotal(),
+    delivery_fee: delivery.fee,
+    total: cartSubtotal() + delivery.fee,
+    note: document.querySelector("#order-note").value.trim(),
+    status: "pending"
+  });
+  if (error) return { saved: false, reason: error.message };
+  return { saved: true };
+}
+
+document.querySelector("#checkout-button").addEventListener("click", async () => {
   if (!cart.length) {
     showToast("Add a product to your bag first.");
     return;
@@ -190,7 +219,7 @@ document.querySelector("#checkout-button").addEventListener("click", () => {
     customerName.focus();
     return;
   }
-  const phoneDigits = customerPhone.value.replace(/\D/g, "");
+  const phoneDigits = customerPhone.value.replace(/\\D/g, "");
   if (phoneDigits.length < 7 || phoneDigits.length > 15) {
     showToast("Enter a valid phone number, including the country code if needed.");
     customerPhone.focus();
@@ -207,6 +236,9 @@ document.querySelector("#checkout-button").addEventListener("click", () => {
     return;
   }
   openWhatsApp(orderMessage());
+  const result = await saveOrderToDashboard();
+  if (result.saved) showToast("Order sent to WhatsApp and saved for the owner.");
+  else showToast("WhatsApp opened. The order was not saved to the dashboard: " + result.reason);
 });
 
 document.querySelector("#delivery-zone").addEventListener("change", (event) => {
