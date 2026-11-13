@@ -41,6 +41,11 @@
         <p class="admin-hint">Changes are saved to the shared catalogue. Mark an item unavailable when it is out of stock; it will no longer be offered for ordering.</p>
       </div>
       <div class="admin-panel"><div class="admin-toolbar"><h3>Current products</h3><span id="product-total"></span></div><div id="admin-product-list" class="admin-product-list" aria-live="polite"></div></div>
+      <section class="admin-panel orders-panel">
+        <div class="admin-toolbar"><div><h3>Customer orders</h3><p>Review incoming orders and keep customers updated.</p></div><button class="button button-outline" id="refresh-orders" type="button">Refresh orders</button></div>
+        <div class="order-filters"><label for="order-status-filter">Filter orders</label><select id="order-status-filter"><option value="all">All orders</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="processing">Processing</option><option value="dispatched">Dispatched</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select></div>
+        <div id="admin-order-list" class="admin-order-list" aria-live="polite"><p class="admin-hint">Orders will appear here when the order database is enabled.</p></div>
+      </section>
     </section>
     <p class="admin-message" id="admin-message" role="status" aria-live="polite"></p>
   </main>
