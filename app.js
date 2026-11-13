@@ -219,7 +219,7 @@ document.querySelector("#checkout-button").addEventListener("click", async () =>
     customerName.focus();
     return;
   }
-  const phoneDigits = customerPhone.value.replace(/\\D/g, "");
+  const phoneDigits = customerPhone.value.replace(/\D/g, "");
   if (phoneDigits.length < 7 || phoneDigits.length > 15) {
     showToast("Enter a valid phone number, including the country code if needed.");
     customerPhone.focus();
