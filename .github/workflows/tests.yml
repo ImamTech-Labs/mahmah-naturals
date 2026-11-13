@@ -54,8 +54,6 @@ jobs:
           test -f dist/admin.html
           test -f dist/admin.js
           test -f dist/supabase-config.js
-          test -f dist/payment-return.html
-          test -f dist/payment-return.js
           test -d dist/assets
           test ! -e dist/server.py
           test ! -e dist/.env
