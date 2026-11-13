@@ -69,7 +69,7 @@ The shopping bag includes quantity controls, remove-item actions, a delivery-zon
 
 ## Owner dashboard (Supabase setup required)
 
-The private owner dashboard is at `admin.html`. It supports owner sign-in, listing products, adding/editing products, changing prices, marking products available/unavailable, and deleting listings. The public storefront reads the shared catalogue from Supabase when configured and falls back to the bundled catalogue if the service is not configured or is temporarily unavailable.
+The private owner dashboard is at `admin.html`. It supports owner sign-in, listing products, adding/editing products, changing prices, marking products available/unavailable, and deleting listings. It also displays customer orders, lets the owner filter them by status, update their status (Pending, Confirmed, Processing, Dispatched, Delivered, or Cancelled), and contact customers on WhatsApp. The public storefront reads the shared catalogue from Supabase when configured and falls back to the bundled catalogue if the service is not configured or is temporarily unavailable. When the order table is configured, customer checkout saves an order record before the owner confirms the order on WhatsApp.
 
 To activate shared management:
 
@@ -80,4 +80,4 @@ To activate shared management:
 5. In Supabase Project Settings > API, copy the Project URL and anon/public key into `supabase-config.js`. Never use a service-role or secret key in website files.
 6. Deploy the updated site. Open `/admin.html` and sign in with the owner's account.
 
-The database enforces row-level security: visitors can read the product catalogue, but only the UUID explicitly added to `store_admins` can create, edit, or delete products. The dashboard checks this membership before showing the management workspace. Newly suggested products start unavailable until the owner verifies them. The dashboard is not fully active until the Supabase project, owner account, SQL setup, and public client settings have been configured. The dashboard does not manage orders or payments.
+The database enforces row-level security: visitors can read the product catalogue and submit new orders, but only the UUID explicitly added to `store_admins` can create, edit, or delete products or read and update customer orders. The dashboard checks this membership before showing the management workspace. Newly suggested products start unavailable until the owner verifies them. The dashboard and order-management features are not fully active until the Supabase project, owner account, updated SQL setup, and public client settings have been configured. The website does not collect online payments; WhatsApp remains the order-confirmation channel.
