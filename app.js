@@ -183,26 +183,16 @@ async function saveOrderToDashboard() {
     return { saved: false, reason: "Order database is not configured yet." };
   }
   const client = window.supabase.createClient(config.url, config.anonKey);
-  const delivery = selectedDelivery();
-  const { error } = await client.from("orders").insert({
-    customer_name: document.querySelector("#customer-name").value.trim(),
-    customer_phone: document.querySelector("#customer-phone").value.trim(),
-    delivery_zone: deliveryZone,
-    delivery_address: document.querySelector("#delivery-address").value.trim(),
-    items: cart.map((item) => ({
-      id: item.id,
-      name: item.name,
-      quantity: item.quantity,
-      unit_price: Number(item.price),
-      line_total: Number(item.price) * item.quantity
-    })),
-    subtotal: cartSubtotal(),
-    delivery_fee: delivery.fee,
-    total: cartSubtotal() + delivery.fee,
-    note: document.querySelector("#order-note").value.trim(),
-    status: "pending"
+  const { data, error } = await client.rpc("create_customer_order", {
+    p_customer_name: document.querySelector("#customer-name").value.trim(),
+    p_customer_phone: document.querySelector("#customer-phone").value.trim(),
+    p_delivery_zone: deliveryZone,
+    p_delivery_address: document.querySelector("#delivery-address").value.trim(),
+    p_items: cart.map((item) => ({ id: item.id, quantity: item.quantity })),
+    p_note: document.querySelector("#order-note").value.trim()
   });
   if (error) return { saved: false, reason: error.message };
+  if (!data) return { saved: false, reason: "The order service did not return an order reference." };
   return { saved: true };
 }
 
