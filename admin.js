@@ -214,7 +214,7 @@ function renderOrders(orders) {
     label.append(select);
     const whatsapp = document.createElement("a");
     whatsapp.className = "button button-outline";
-    whatsapp.href = "https://wa.me/" + String(order.customer_phone).replace(/\\D/g, "") + "?text=" + encodeURIComponent("Hello " + order.customer_name + ", this is MahMah Naturals regarding your order " + order.id.slice(0, 8).toUpperCase() + ".");
+    whatsapp.href = "https://wa.me/" + String(order.customer_phone).replace(/\D/g, "") + "?text=" + encodeURIComponent("Hello " + order.customer_name + ", this is MahMah Naturals regarding your order " + order.id.slice(0, 8).toUpperCase() + ".");
     whatsapp.target = "_blank";
     whatsapp.rel = "noopener noreferrer";
     whatsapp.textContent = "Contact customer";
