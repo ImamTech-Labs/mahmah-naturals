@@ -90,6 +90,7 @@ async function saveProduct(overrides) {
   notify("Product saved to the shared storefront.");
   resetForm();
   await loadCatalogue();
+  await loadOrders();
 }
 document.querySelector("#login-form").addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -138,3 +139,99 @@ else {
   client = window.supabase.createClient(config.url, config.anonKey);
   client.auth.getSession().then(({ data }) => { if (data.session) showWorkspace(); });
 }
+
+
+const ORDER_STATUSES = ["pending", "confirmed", "processing", "dispatched", "delivered", "cancelled"];
+function formatOrderDate(value) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "Date unavailable" : date.toLocaleString("en-NG", { dateStyle: "medium", timeStyle: "short" });
+}
+function renderOrders(orders) {
+  const list = document.querySelector("#admin-order-list");
+  list.replaceChildren();
+  const filter = document.querySelector("#order-status-filter").value;
+  const visible = filter === "all" ? orders : orders.filter((order) => order.status === filter);
+  if (!visible.length) {
+    list.append(safeText("p", "No orders to show for this filter.", "admin-hint"));
+    return;
+  }
+  visible.forEach((order) => {
+    const card = document.createElement("article");
+    card.className = "admin-order-card";
+    const heading = document.createElement("div");
+    heading.className = "admin-order-heading";
+    const title = document.createElement("div");
+    title.append(
+      safeText("strong", "Order " + order.id.slice(0, 8).toUpperCase()),
+      safeText("span", formatOrderDate(order.created_at))
+    );
+    const status = document.createElement("span");
+    status.className = "admin-status " + order.status;
+    status.textContent = order.status.charAt(0).toUpperCase() + order.status.slice(1);
+    heading.append(title, status);
+    const customer = document.createElement("div");
+    customer.className = "admin-order-customer";
+    customer.append(
+      safeText("strong", order.customer_name),
+      safeText("span", order.customer_phone),
+      safeText("span", order.delivery_zone.toUpperCase() + " · " + order.delivery_address)
+    );
+    const items = document.createElement("ul");
+    items.className = "admin-order-items";
+    (Array.isArray(order.items) ? order.items : []).forEach((item) => {
+      items.append(safeText("li", String(item.name || "Product") + " × " + Number(item.quantity || 0) + " — ₦" + Number(item.line_total || 0).toLocaleString("en-NG")));
+    });
+    const totals = safeText("p", "Subtotal ₦" + Number(order.subtotal).toLocaleString("en-NG") + " · Delivery ₦" + Number(order.delivery_fee).toLocaleString("en-NG") + " · Total ₦" + Number(order.total).toLocaleString("en-NG"), "admin-order-total");
+    card.append(heading, customer, items, totals);
+    if (order.note) card.append(safeText("p", "Customer note: " + order.note, "admin-order-note"));
+    const actions = document.createElement("div");
+    actions.className = "admin-order-actions";
+    const label = safeText("label", "Update status");
+    const select = document.createElement("select");
+    select.className = "admin-order-status-select";
+    select.setAttribute("aria-label", "Update status for order " + order.id.slice(0, 8));
+    ORDER_STATUSES.forEach((value) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value.charAt(0).toUpperCase() + value.slice(1);
+      option.selected = value === order.status;
+      select.append(option);
+    });
+    select.addEventListener("change", async () => {
+      select.disabled = true;
+      const { error } = await client.from("orders").update({ status: select.value, updated_at: new Date().toISOString() }).eq("id", order.id);
+      if (error) {
+        notify("Could not update order: " + error.message, true);
+        select.value = order.status;
+      } else {
+        notify("Order status updated.");
+        order.status = select.value;
+        status.className = "admin-status " + order.status;
+        status.textContent = order.status.charAt(0).toUpperCase() + order.status.slice(1);
+      }
+      select.disabled = false;
+    });
+    label.append(select);
+    const whatsapp = document.createElement("a");
+    whatsapp.className = "button button-outline";
+    whatsapp.href = "https://wa.me/" + String(order.customer_phone).replace(/\\D/g, "") + "?text=" + encodeURIComponent("Hello " + order.customer_name + ", this is MahMah Naturals regarding your order " + order.id.slice(0, 8).toUpperCase() + ".");
+    whatsapp.target = "_blank";
+    whatsapp.rel = "noopener noreferrer";
+    whatsapp.textContent = "Contact customer";
+    actions.append(label, whatsapp);
+    card.append(actions);
+    list.append(card);
+  });
+}
+async function loadOrders() {
+  const list = document.querySelector("#admin-order-list");
+  list.replaceChildren(safeText("p", "Loading orders…", "admin-hint"));
+  const { data, error } = await client.from("orders").select("*").order("created_at", { ascending: false }).limit(100);
+  if (error) {
+    list.replaceChildren(safeText("p", "Orders are not set up yet. Run the updated supabase-schema.sql in Supabase SQL Editor. Details: " + error.message, "admin-hint"));
+    return;
+  }
+  renderOrders(data || []);
+}
+document.querySelector("#refresh-orders").addEventListener("click", loadOrders);
+document.querySelector("#order-status-filter").addEventListener("change", loadOrders);
