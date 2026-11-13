@@ -120,3 +120,109 @@ create policy "Store admins can update orders" on public.orders
 
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
 create index if not exists orders_status_idx on public.orders (status);
+
+
+-- Secure customer order creation.
+-- Customers submit product IDs and quantities only. Prices, availability, delivery
+-- fees, item snapshots, and totals are calculated inside this trusted database function.
+create or replace function public.create_customer_order(
+  p_customer_name text,
+  p_customer_phone text,
+  p_delivery_zone text,
+  p_delivery_address text,
+  p_items jsonb,
+  p_note text default ''
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_zone_name text;
+  v_delivery_fee integer;
+  v_subtotal integer := 0;
+  v_item jsonb;
+  v_product record;
+  v_quantity integer;
+  v_order_items jsonb := '[]'::jsonb;
+  v_order_id uuid;
+begin
+  if char_length(trim(coalesce(p_customer_name, ''))) not between 2 and 120 then
+    raise exception 'Enter a valid customer name.';
+  end if;
+  if char_length(trim(coalesce(p_customer_phone, ''))) not between 7 and 30 then
+    raise exception 'Enter a valid customer phone number.';
+  end if;
+  if char_length(trim(coalesce(p_delivery_address, ''))) not between 8 and 500 then
+    raise exception 'Enter a delivery address with an area and useful landmark.';
+  end if;
+  if char_length(coalesce(p_note, '')) > 300 then
+    raise exception 'The order note is too long.';
+  end if;
+  if jsonb_typeof(p_items) is distinct from 'array'
+     or jsonb_array_length(p_items) not between 1 and 50 then
+    raise exception 'Your bag is empty or contains too many items.';
+  end if;
+
+  case p_delivery_zone
+    when 'kaduna' then v_zone_name := 'Kaduna State (all areas, including Zaria)'; v_delivery_fee := 1000;
+    when 'kano' then v_zone_name := 'Kano State'; v_delivery_fee := 1500;
+    when 'katsina' then v_zone_name := 'Katsina State'; v_delivery_fee := 2500;
+    when 'abuja' then v_zone_name := 'Abuja (FCT)'; v_delivery_fee := 2000;
+    else raise exception 'Choose one of the available delivery locations.';
+  end case;
+
+  for v_item in select value from jsonb_array_elements(p_items)
+  loop
+    if jsonb_typeof(v_item) is distinct from 'object'
+       or jsonb_typeof(v_item->'id') is distinct from 'string'
+       or jsonb_typeof(v_item->'quantity') is distinct from 'number' then
+      raise exception 'An item in your bag could not be checked.';
+    end if;
+
+    if (v_item->>'quantity') !~ '^[0-9]+$' then
+      raise exception 'An item quantity is invalid.';
+    end if;
+    v_quantity := (v_item->>'quantity')::integer;
+    if v_quantity not between 1 and 99 then
+      raise exception 'An item quantity is invalid.';
+    end if;
+
+    select id, name, price, status
+      into v_product
+      from public.products
+      where id = v_item->>'id'
+      for share;
+    if not found or v_product.status <> 'available' then
+      raise exception 'A selected product is no longer available. Please refresh your bag.';
+    end if;
+
+    v_subtotal := v_subtotal + (v_product.price * v_quantity);
+    v_order_items := v_order_items || jsonb_build_array(jsonb_build_object(
+      'id', v_product.id,
+      'name', v_product.name,
+      'quantity', v_quantity,
+      'unit_price', v_product.price,
+      'line_total', v_product.price * v_quantity
+    ));
+  end loop;
+
+  insert into public.orders (
+    customer_name, customer_phone, delivery_zone, delivery_address,
+    items, subtotal, delivery_fee, total, note, status
+  ) values (
+    trim(p_customer_name), trim(p_customer_phone), p_delivery_zone, trim(p_delivery_address),
+    v_order_items, v_subtotal, v_delivery_fee, v_subtotal + v_delivery_fee,
+    coalesce(p_note, ''), 'pending'
+  )
+  returning id into v_order_id;
+
+  return v_order_id;
+end;
+$$;
+
+-- Remove direct customer inserts so callers cannot submit forged prices or totals.
+revoke insert on public.orders from anon, authenticated;
+revoke all on function public.create_customer_order(text, text, text, text, jsonb, text) from public;
+grant execute on function public.create_customer_order(text, text, text, text, jsonb, text) to anon, authenticated;
