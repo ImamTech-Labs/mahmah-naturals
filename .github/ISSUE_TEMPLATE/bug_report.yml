@@ -1,0 +1,51 @@
+name: Bug report
+description: Report a reproducible problem in the storefront or owner dashboard
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Please do not include customer personal data, passwords, API keys, or payment secrets."
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the problem clearly.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Open ... 2. Select ... 3. Notice ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Customer storefront
+        - Product catalogue
+        - Shopping bag
+        - WhatsApp order handoff
+        - Owner dashboard
+        - Mobile layout
+        - Accessibility
+        - Deployment
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and device
+      placeholder: "e.g. Chrome on Android"
+    validations:
+      required: false
