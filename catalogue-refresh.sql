@@ -4,20 +4,20 @@
 
 update public.products
 set image = case id
-  when 'shea-black-soap' then 'assets/products/shea-black-soap.jpg'
-  when 'herbal-black-soap' then 'assets/products/herbal-black-soap.jpg'
-  when 'black-soap-large' then 'assets/products/black-soap-large.jpg'
-  when 'body-lotion' then 'assets/products/body-lotion.jpg'
-  when 'body-butter' then 'assets/products/body-butter.jpg'
-  when 'body-scrub-large' then 'assets/products/body-scrub-large.jpg'
-  when 'face-cleanser' then 'assets/products/face-cleanser.jpg'
-  when 'face-moisturiser' then 'assets/products/face-moisturiser.jpg'
-  when 'face-toner' then 'assets/products/face-toner.jpg'
-  when 'face-serum' then 'assets/products/face-serum.jpg'
-  when 'face-oil' then 'assets/products/face-oil.jpg'
-  when 'body-oil' then 'assets/products/body-oil.jpg'
-  when 'shea-oil' then 'assets/products/shea-oil.jpg'
-  when 'body-oil-large' then 'assets/products/body-oil-large.jpg'
+  when 'shea-black-soap' then 'assets/products/shea-black-soap.svg'
+  when 'herbal-black-soap' then 'assets/products/herbal-black-soap.svg'
+  when 'black-soap-large' then 'assets/products/black-soap-large.svg'
+  when 'body-lotion' then 'assets/products/body-lotion.svg'
+  when 'body-butter' then 'assets/products/body-butter.svg'
+  when 'body-scrub-large' then 'assets/products/body-scrub-large.svg'
+  when 'face-cleanser' then 'assets/products/face-cleanser.svg'
+  when 'face-moisturiser' then 'assets/products/face-moisturiser.svg'
+  when 'face-toner' then 'assets/products/face-toner.svg'
+  when 'face-serum' then 'assets/products/face-serum.svg'
+  when 'face-oil' then 'assets/products/face-oil.svg'
+  when 'body-oil' then 'assets/products/body-oil.svg'
+  when 'shea-oil' then 'assets/products/shea-oil.svg'
+  when 'body-oil-large' then 'assets/products/body-oil-large.svg'
   else image
 end,
 status = 'available',
