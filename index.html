@@ -15,7 +15,7 @@
     <script src="cart-storage.js" defer></script>
     <script src="app.js" defer></script>
   </head>
-  <body>
+  <body data-page="home">
     <div class="announcement">Thoughtful care for your everyday routine <span aria-hidden="true">✦</span> Delivery in selected Nigerian locations</div>
 
     <header class="site-header">
@@ -24,9 +24,11 @@
       </a>
 
       <nav class="main-nav" aria-label="Main navigation">
-        <a href="#shop" data-category-link="all">Shop</a>
-        <a href="#categories">Collections</a>
-        <a href="#about">Our approach</a>
+        <a href="index.html">Welcome</a>
+        <a href="index.html#categories">Collections</a>
+        <a href="soaps.html">Soaps</a>
+        <a href="oils.html">Oils</a>
+        <a href="approach.html">Our approach</a>
       </nav>
 
       <div class="header-actions">
@@ -81,8 +83,8 @@
         <div class="category-grid">
           <a class="category-card category-skin" href="#shop" data-category-link="skincare"><span class="category-number">01</span><span class="category-art skin-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Skincare <span>↗</span></span><span class="category-caption">Everyday face care</span></a>
           <a class="category-card category-body" href="#shop" data-category-link="body-care"><span class="category-number">02</span><span class="category-art body-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Body care <span>↗</span></span><span class="category-caption">A softer daily ritual</span></a>
-          <a class="category-card category-soap" href="#shop" data-category-link="soaps"><span class="category-number">03</span><span class="category-art soap-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Soaps <span>↗</span></span><span class="category-caption">A fresh start</span></a>
-          <a class="category-card category-oils" href="#shop" data-category-link="oils"><span class="category-number">04</span><span class="category-art oil-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Oils <span>↗</span></span><span class="category-caption">A nourishing finishing touch</span></a>
+          <a class="category-card category-soap" href="soaps.html"><span class="category-number">03</span><span class="category-art soap-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Soaps <span>↗</span></span><span class="category-caption">A fresh start</span></a>
+          <a class="category-card category-oils" href="oils.html"><span class="category-number">04</span><span class="category-art oil-art" aria-hidden="true"><i></i><b></b></span><span class="category-name">Oils <span>↗</span></span><span class="category-caption">A nourishing finishing touch</span></a>
         </div>
       </section>
 
@@ -113,10 +115,11 @@
     <footer class="site-footer">
       <div class="section-wrap footer-main">
         <div class="footer-brand"><img src="assets/mahmah-naturals-logo.jpeg" alt="MahMah Naturals" /><p>Everyday care, with a little more intention.</p></div>
-        <div class="footer-links"><span class="eyebrow">EXPLORE</span><a href="#shop">Shop all</a><a href="#categories">Collections</a><a href="#about">Contact the owner</a><a href="admin.html" rel="nofollow">Owner sign in</a></div>
+        <div class="footer-links"><span class="eyebrow">EXPLORE</span><a href="index.html">Welcome</a><a href="soaps.html">Soaps</a><a href="oils.html">Oils</a><a href="approach.html">Our approach</a><a href="approach.html">Contact the owner</a></div>
         <div class="footer-delivery"><span class="eyebrow">DELIVERY</span><p>Orders are delivered personally by the shop owner. Current delivery locations are Kaduna, Kano, Katsina and Abuja.</p></div>
       </div>
       <div class="footer-bottom section-wrap"><span>© <span id="year"></span> MahMah Naturals</span><span>Made with care <b>✦</b></span></div>
+      <div class="footer-owner-access section-wrap"><a href="admin.html" rel="nofollow">Owner dashboard <span aria-hidden="true">↗</span></a></div>
     </footer>
 
     <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>

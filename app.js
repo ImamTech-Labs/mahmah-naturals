@@ -283,7 +283,8 @@ document.querySelectorAll("[data-category-link]").forEach((link) => {
 });
 
 function renderProducts() {
-  const activeFilter = document.querySelector(".filter-chip.is-active")?.dataset.filter || "all";
+  const pageCategory = document.body.dataset.categoryPage || "";
+  const activeFilter = pageCategory || document.querySelector(".filter-chip.is-active")?.dataset.filter || "all";
   const query = document.querySelector("#product-search").value.trim().toLowerCase();
   const sort = document.querySelector("#sort-products").value;
   let matches = products.filter((product) =>
@@ -366,6 +367,12 @@ function updateProducts() {
 document.querySelector("#product-search").addEventListener("input", updateProducts);
 document.querySelector("#sort-products").addEventListener("change", updateProducts);
 document.querySelector("#year").textContent = new Date().getFullYear();
+const pageCategory = document.body.dataset.categoryPage || "";
+if (pageCategory) {
+  document.querySelectorAll("[data-filter]").forEach((chip) => chip.classList.toggle("is-active", chip.dataset.filter === pageCategory));
+  const heading = document.querySelector(".shop-heading h2");
+  if (heading) heading.textContent = pageCategory === "soaps" ? "The soap collection." : "The oils collection.";
+}
 renderProducts();
 renderCart();
 
