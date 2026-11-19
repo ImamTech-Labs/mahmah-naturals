@@ -381,15 +381,39 @@ function renderProductDetail() {
     return;
   }
   document.title = product.name + " | MahMah Naturals";
-  const image = document.createElement("img");
-  image.className = "product-detail-image";
-  image.src = product.image || "";
-  image.alt = product.name;
-  image.loading = "eager";
   const visual = document.createElement("div");
   visual.className = "product-detail-visual";
-  if (product.image) visual.append(image);
-  else {
+  const galleryImages = [...new Set([...(Array.isArray(product.gallery) ? product.gallery : []), product.image].filter(Boolean))];
+  if (galleryImages.length) {
+    const image = document.createElement("img");
+    image.className = "product-detail-image";
+    image.src = galleryImages[0];
+    image.alt = product.name;
+    image.loading = "eager";
+    visual.append(image);
+    if (galleryImages.length > 1) {
+      const gallery = document.createElement("div");
+      gallery.className = "product-gallery-thumbnails";
+      gallery.setAttribute("aria-label", "More product photos");
+      galleryImages.forEach((src, index) => {
+        const thumb = document.createElement("button");
+        thumb.type = "button";
+        thumb.className = "product-gallery-thumb" + (index === 0 ? " is-active" : "");
+        thumb.setAttribute("aria-label", "View product photo " + (index + 1));
+        const thumbImage = document.createElement("img");
+        thumbImage.src = src;
+        thumbImage.alt = "";
+        thumb.append(thumbImage);
+        thumb.addEventListener("click", () => {
+          image.src = src;
+          gallery.querySelectorAll("button").forEach((button) => button.classList.remove("is-active"));
+          thumb.classList.add("is-active");
+        });
+        gallery.append(thumb);
+      });
+      visual.append(gallery);
+    }
+  } else {
     const placeholder = document.createElement("div");
     placeholder.className = "product-placeholder placeholder-" + product.category;
     placeholder.textContent = product.category === "skincare" ? "SKINCARE" : product.category === "oils" ? "NATURAL OILS" : "BODY CARE";
@@ -469,7 +493,7 @@ async function loadSharedCatalogue() {
         return {
           id: item.id, name: item.name, category: item.category,
           price: Number(item.price), description: item.description || bundled?.description || "",
-          image: item.image || bundled?.image || "", status: item.status || bundled?.status || "unavailable"
+          image: item.image || bundled?.image || "", gallery: bundled?.gallery || [], status: item.status || bundled?.status || "unavailable"
         };
       });
       cart = cart.filter((entry) => products.some((product) => product.id === entry.id && product.status === "available"));
