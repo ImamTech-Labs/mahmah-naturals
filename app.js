@@ -371,7 +371,7 @@ const pageCategory = document.body.dataset.categoryPage || "";
 if (pageCategory) {
   document.querySelectorAll("[data-filter]").forEach((chip) => chip.classList.toggle("is-active", chip.dataset.filter === pageCategory));
   const heading = document.querySelector(".shop-heading h2");
-  if (heading) heading.textContent = pageCategory === "soaps" ? "The soap collection." : "The oils collection.";
+  if (heading) heading.textContent = ({ skincare: "The skincare collection.", "body-care": "The bodycare collection.", soaps: "The soap collection.", oils: "The oils collection." })[pageCategory] || "The MahMah collection.";
 }
 renderProducts();
 renderCart();
