@@ -241,3 +241,27 @@ body.drawer-open { overflow: hidden; }
 .checkout-textarea { min-height: 68px; resize: vertical; }
 .checkout-details .delivery-label { margin-top: 5px; }
 @media (max-width: 700px) { .checkout-input { font-size: 16px; } }
+
+/* Multi-page storefront navigation and page-specific layouts */
+.main-nav { gap: clamp(12px, 1.7vw, 25px); }
+.main-nav a[aria-current="page"] { color: var(--gold-deep); }
+body[data-page="collection"] .hero,
+body[data-page="collection"] .benefit-strip,
+body[data-page="collection"] .categories-section,
+body[data-page="collection"] .owner-note { display: none; }
+body[data-page="collection"] .shop-section { min-height: 68vh; padding-top: 72px; }
+body[data-page="collection"] .filter-row { display: none; }
+body[data-page="collection"] .shop-heading { margin-bottom: 34px; }
+body[data-page="approach"] .hero,
+body[data-page="approach"] .benefit-strip,
+body[data-page="approach"] .categories-section,
+body[data-page="approach"] .shop-section { display: none; }
+body[data-page="approach"] .owner-note { min-height: 66vh; padding-block: 90px; }
+.footer-owner-access { display: flex; justify-content: flex-end; padding-bottom: 14px; }
+.footer-owner-access a { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border: 1px solid rgba(255,255,255,.22); border-radius: 3px; color: #c6c2b5; font-size: 9px; letter-spacing: .04em; transition: background .2s, color .2s, border-color .2s; }
+.footer-owner-access a:hover, .footer-owner-access a:focus-visible { border-color: #d5bf7f; background: rgba(213,191,127,.1); color: #fffdf7; }
+@media (max-width: 700px) {
+  .main-nav { flex-wrap: wrap; justify-content: flex-start; column-gap: 15px; row-gap: 7px; }
+  body[data-page="collection"] .shop-section { padding-top: 45px; }
+  body[data-page="approach"] .owner-note { min-height: 62vh; padding-block: 60px; }
+}
