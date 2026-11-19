@@ -325,6 +325,11 @@ function renderProducts() {
     tag.className = "product-tag";
     tag.textContent = product.status === "available" ? "CHECK STOCK ON WHATSAPP" : "CURRENTLY UNAVAILABLE";
     imageWrap.append(tag);
+    const imageLink = document.createElement("a");
+    imageLink.className = "product-detail-link product-image-link";
+    imageLink.href = "product.html?id=" + encodeURIComponent(product.id);
+    imageLink.setAttribute("aria-label", "View details for " + product.name);
+    imageLink.append(imageWrap);
 
     const info = document.createElement("div");
     info.className = "product-info";
@@ -333,6 +338,10 @@ function renderProducts() {
     category.textContent = product.category.replace("-", " ").toUpperCase();
     const name = document.createElement("h3");
     name.textContent = product.name;
+    const nameLink = document.createElement("a");
+    nameLink.className = "product-detail-link product-name-link";
+    nameLink.href = "product.html?id=" + encodeURIComponent(product.id);
+    nameLink.append(name);
     const description = document.createElement("p");
     description.className = "product-description";
     description.textContent = product.description;
@@ -347,8 +356,8 @@ function renderProducts() {
     button.textContent = product.status === "available" ? "Add to bag ＋" : "Unavailable";
     button.disabled = product.status !== "available";
     buyRow.append(price, button);
-    info.append(category, name, description, buyRow);
-    card.append(imageWrap, info);
+    info.append(category, nameLink, description, buyRow);
+    card.append(imageLink, info);
     grid.append(card);
   });
 
@@ -359,6 +368,75 @@ function renderProducts() {
     empty.textContent = "No products match this search yet.";
     grid.append(empty);
   }
+}
+
+
+function renderProductDetail() {
+  const container = document.querySelector("#product-detail");
+  if (!container) return;
+  const productId = new URLSearchParams(window.location.search).get("id");
+  const product = products.find((item) => item.id === productId);
+  if (!product) {
+    container.innerHTML = '<div class="product-detail-empty"><p class="eyebrow">MAHMAH NATURALS</p><h1>Product not found.</h1><p>This product link may be out of date. Please browse our collections.</p><a class="button button-dark" href="collections.html">Explore collections</a></div>';
+    return;
+  }
+  document.title = product.name + " | MahMah Naturals";
+  const image = document.createElement("img");
+  image.className = "product-detail-image";
+  image.src = product.image || "";
+  image.alt = product.name;
+  image.loading = "eager";
+  const visual = document.createElement("div");
+  visual.className = "product-detail-visual";
+  if (product.image) visual.append(image);
+  else {
+    const placeholder = document.createElement("div");
+    placeholder.className = "product-placeholder placeholder-" + product.category;
+    placeholder.textContent = product.category === "skincare" ? "SKINCARE" : product.category === "oils" ? "NATURAL OILS" : "BODY CARE";
+    visual.append(placeholder);
+  }
+  const copy = document.createElement("div");
+  copy.className = "product-detail-copy";
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "eyebrow";
+  eyebrow.textContent = product.category.replace("-", " ").toUpperCase() + " / MAHMAH COLLECTION";
+  const title = document.createElement("h1");
+  title.textContent = product.name;
+  const price = document.createElement("p");
+  price.className = "product-detail-price";
+  price.textContent = formatNaira(product.price);
+  const description = document.createElement("p");
+  description.className = "product-detail-description";
+  description.textContent = product.description || "Contact MahMah Naturals for more information about this product.";
+  const stock = document.createElement("p");
+  stock.className = "product-detail-stock";
+  stock.textContent = product.status === "available" ? "Availability is confirmed directly with the shop owner." : "Please contact the shop owner to ask about availability.";
+  const actions = document.createElement("div");
+  actions.className = "product-detail-actions";
+  const add = document.createElement("button");
+  add.type = "button";
+  add.className = "button button-dark";
+  add.textContent = product.status === "available" ? "Add to my bag ＋" : "Currently unavailable";
+  add.disabled = product.status !== "available";
+  add.addEventListener("click", () => {
+    const existing = cart.find((item) => item.id === product.id);
+    if (existing) existing.quantity += 1;
+    else cart.push({ ...product, quantity: 1 });
+    renderCart();
+    showToast(product.name + " added to your bag.");
+  });
+  const enquire = document.createElement("button");
+  enquire.type = "button";
+  enquire.className = "button button-outline";
+  enquire.textContent = "Ask about this product";
+  enquire.addEventListener("click", () => openWhatsApp("Hello MahMah Naturals, please let me know whether " + product.name + " is available and its current price."));
+  actions.append(add, enquire);
+  const back = document.createElement("a");
+  back.className = "back-link product-detail-back";
+  back.href = ({ skincare: "skincare.html", "body-care": "bodycare.html", soaps: "soaps.html", oils: "oils.html" })[product.category] || "collections.html";
+  back.textContent = "← Back to this collection";
+  copy.append(eyebrow, title, price, description, stock, actions, back);
+  container.replaceChildren(visual, copy);
 }
 
 function updateProducts() {
@@ -375,6 +453,7 @@ if (pageCategory) {
 }
 renderProducts();
 renderCart();
+renderProductDetail();
 
 async function loadSharedCatalogue() {
   const config = window.MAHMAH_SUPABASE_CONFIG;
@@ -396,6 +475,7 @@ async function loadSharedCatalogue() {
       cart = cart.filter((entry) => products.some((product) => product.id === entry.id && product.status === "available"));
       renderProducts();
       renderCart();
+      renderProductDetail();
     }
   } catch (error) {
     console.error("Shared catalogue could not be loaded; using the bundled catalogue.", error);
