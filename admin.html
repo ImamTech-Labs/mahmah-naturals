@@ -13,41 +13,51 @@
   <script src="admin.js" defer></script>
 </head>
 <body class="admin-page">
-  <header class="site-header admin-header"><a class="brand" href="index.html"><img src="assets/mahmah-naturals-logo.jpeg" alt="MahMah Naturals" /></a><a class="text-button" href="index.html">View storefront ↗</a></header>
+  <header class="site-header admin-header"><a class="brand" href="index.html"><img src="assets/mahmah-naturals-logo.jpeg" alt="MahMah Naturals" /></a><div class="admin-header-actions"><span class="admin-private-label"><span></span> PRIVATE STORE</span><a class="text-button" href="index.html">View storefront ↗</a></div></header>
   <main class="admin-main">
-    <section class="admin-intro"><p class="eyebrow">PRIVATE STORE MANAGEMENT</p><h1>Owner dashboard</h1><p>Manage the products customers see in the MahMah Naturals shop.</p></section>
+    <section class="admin-intro"><div><p class="eyebrow">YOUR BUSINESS, AT A GLANCE</p><h1>Good to see you.</h1><p>Welcome to your MahMah Naturals store studio. Keep your collections fresh and your customers cared for.</p></div><div class="admin-intro-mark" aria-hidden="true"><span>MN</span><i>✦</i></div></section>
     <section class="admin-panel" id="login-panel">
-      <h2>Owner sign in</h2><p>Sign in with the owner account created in your Supabase project.</p>
+      <div class="panel-kicker">OWNER ACCESS</div><h2>Welcome back</h2><p>Sign in with the owner account created in your Supabase project.</p>
       <form id="login-form" class="admin-form">
         <label>Email address<input id="login-email" type="email" autocomplete="username" required /></label>
         <label>Password<input id="login-password" type="password" autocomplete="current-password" required /></label>
-        <button class="button button-dark" type="submit">Sign in</button>
+        <button class="button button-dark" type="submit">Sign in to dashboard <span>→</span></button>
       </form>
     </section>
     <section class="admin-workspace" id="workspace" hidden>
-      <div class="admin-toolbar"><div><h2>Product catalogue</h2><p id="session-label"></p></div><button class="button button-outline" id="sign-out" type="button">Sign out</button></div>
-      <div class="admin-panel">
-        <h3 id="editor-title">Add a product</h3>
-        <form id="product-form" class="admin-form">
-          <input id="product-id" type="hidden" />
-          <label>Product name<input id="product-name" maxlength="100" required /></label>
-          <label>Collection<select id="product-category" required><option value="skincare">Skincare</option><option value="body-care">Body care</option><option value="soaps">Soaps</option><option value="oils">Oils</option></select></label>
-          <label>Price (₦)<input id="product-price" type="number" min="1" max="10000000" step="1" required /></label>
-          <label>Product photo URL (optional)<input id="product-image" type="url" maxlength="500" placeholder="https://..." /></label>
-          <label class="admin-full">Description<textarea id="product-description" rows="3" maxlength="500"></textarea></label>
-          <label>Availability<select id="product-status"><option value="available">Available to order</option><option value="unavailable">Out of stock / unavailable</option></select></label>
-          <div class="admin-actions"><button class="button button-dark" type="submit">Save product</button><button class="button button-outline" id="cancel-edit" type="button">Clear form</button></div>
-        </form>
-        <p class="admin-hint">Changes are saved to the shared catalogue. Mark an item unavailable when it is out of stock; it will no longer be offered for ordering.</p>
+      <div class="admin-welcome-bar"><div><p class="eyebrow">STORE OVERVIEW</p><h2>Your store at a glance</h2><p id="session-label"></p></div><button class="button button-outline" id="sign-out" type="button">Sign out ↗</button></div>
+      <div class="admin-stats" aria-label="Store summary">
+        <article class="admin-stat"><span class="stat-icon">✧</span><span class="stat-label">Total products</span><strong id="stat-total">0</strong><small>In your catalogue</small></article>
+        <article class="admin-stat"><span class="stat-icon">✓</span><span class="stat-label">Available now</span><strong id="stat-available">0</strong><small>Ready for customers</small></article>
+        <article class="admin-stat"><span class="stat-icon">◷</span><span class="stat-label">Unavailable</span><strong id="stat-unavailable">0</strong><small>Temporarily hidden</small></article>
+        <article class="admin-stat"><span class="stat-icon">♡</span><span class="stat-label">Customer orders</span><strong id="stat-orders">—</strong><small>Latest 100 orders</small></article>
       </div>
-      <div class="admin-panel"><div class="admin-toolbar"><h3>Current products</h3><span id="product-total"></span></div><div id="admin-product-list" class="admin-product-list" aria-live="polite"></div></div>
-      <section class="admin-panel orders-panel">
-        <div class="admin-toolbar"><div><h3>Customer orders</h3><p>Review incoming orders and keep customers updated.</p></div><button class="button button-outline" id="refresh-orders" type="button">Refresh orders</button></div>
-        <div class="order-filters"><label for="order-status-filter">Filter orders</label><select id="order-status-filter"><option value="all">All orders</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="processing">Processing</option><option value="dispatched">Dispatched</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select></div>
+      <nav class="admin-quick-nav" aria-label="Dashboard sections"><a href="#catalogue-section">Products <span>↓</span></a><a href="#orders-section">Customer orders <span>↓</span></a></nav>
+      <section class="admin-panel" id="catalogue-section">
+        <div class="admin-section-heading"><div><p class="panel-kicker">YOUR COLLECTIONS</p><h3>Product catalogue</h3><p>Keep your products and availability up to date.</p></div><span class="admin-count-pill" id="product-total">0 products</span></div>
+        <div class="admin-editor-card">
+          <div class="admin-editor-heading"><div><span class="editor-symbol">＋</span><div><h3 id="editor-title">Add a product</h3><p>Give your customers something lovely to discover.</p></div></div></div>
+          <form id="product-form" class="admin-form">
+            <input id="product-id" type="hidden" />
+            <label>Product name<input id="product-name" maxlength="100" placeholder="e.g. Shea Glow Body Butter" required /></label>
+            <label>Collection<select id="product-category" required><option value="skincare">Skincare</option><option value="body-care">Body care</option><option value="soaps">Soaps</option><option value="oils">Oils</option></select></label>
+            <label>Price (₦)<input id="product-price" type="number" min="1" max="10000000" step="1" placeholder="0" required /></label>
+            <label>Product photo URL <span class="optional-label">Optional</span><input id="product-image" type="url" maxlength="500" placeholder="https://..." /></label>
+            <label class="admin-full">Description<textarea id="product-description" rows="3" maxlength="500" placeholder="Tell customers what makes this product special…"></textarea></label>
+            <label>Availability<select id="product-status"><option value="available">Available to order</option><option value="unavailable">Out of stock / unavailable</option></select></label>
+            <div class="admin-actions"><button class="button button-dark" type="submit">Save product <span>→</span></button><button class="button button-outline" id="cancel-edit" type="button">Clear form</button></div>
+          </form>
+          <p class="admin-hint">Changes are saved to the shared catalogue. Mark an item unavailable when it is out of stock; it will no longer be offered for ordering.</p>
+        </div>
+        <div class="admin-product-list-wrap"><div class="admin-list-heading"><h3>All products</h3><span>Manage your shop items below</span></div><div id="admin-product-list" class="admin-product-list" aria-live="polite"></div></div>
+      </section>
+      <section class="admin-panel orders-panel" id="orders-section">
+        <div class="admin-section-heading"><div><p class="panel-kicker">CUSTOMER CARE</p><h3>Customer orders</h3><p>Review incoming orders and keep customers updated.</p></div><button class="button button-outline" id="refresh-orders" type="button">↻ Refresh orders</button></div>
+        <div class="order-filters"><label for="order-status-filter">Show orders</label><select id="order-status-filter"><option value="all">All orders</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="processing">Processing</option><option value="dispatched">Dispatched</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select></div>
         <div id="admin-order-list" class="admin-order-list" aria-live="polite"><p class="admin-hint">Orders will appear here when the order database is enabled.</p></div>
       </section>
     </section>
-    <p class="admin-message" id="admin-message" role="status" aria-live="polite"></p>
+    <p class="admin-message" id="admin-message" role="status" aria-live="polite"></p><footer class="admin-footer">Made with care for <strong>MahMah Naturals</strong> <span>✦</span></footer>
   </main>
 </body>
 </html>
