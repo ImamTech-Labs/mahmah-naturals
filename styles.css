@@ -647,3 +647,114 @@ body { background: #fffdf8; }
  .product-detail-actions .button { width:100%; }
 }
 @media(prefers-reduced-motion:reduce) { .product-name-link h3 { transition:none; } }
+
+
+/* Natural luxury + premium elegance storefront direction */
+:root {
+  --cream: #f7f4eb;
+  --paper: #fffdf7;
+  --ink: #173b31;
+  --muted: #68766c;
+  --gold: #b99a58;
+  --gold-deep: #8b6d32;
+  --gold-light: #e8d9b5;
+  --sage: #879783;
+  --line: #e2dfd1;
+}
+.announcement { background:#173b31; color:#f8f4e9; }
+.announcement span { color:#d8bd7d; }
+.section-sidebar { background:#f5f2e9; border-color:#dcd9ca; }
+.section-sidebar .sidebar-nav a { color:#52685d; }
+.section-sidebar .sidebar-nav a:hover,
+.section-sidebar .sidebar-nav a.is-active { background:#e5e9df; color:#173b31; }
+.section-sidebar .sidebar-nav a.is-active::before { background:#b99a58; }
+.sidebar-bottom a { color:#173b31; border-color:#c9b47f; }
+.store-topbar { background:rgba(255,253,247,.94); border-color:#e2dfd1; }
+.search-box { background:#f6f4ec; border-color:#dcd9ca; }
+.cart-button { color:#173b31; }
+.cart-count { background:#b99a58; }
+.button-dark { background:#173b31; color:#fffdf7; }
+.button-dark:hover:not(:disabled) { background:#285447; }
+.button-outline { color:#173b31; border-color:#b99a58; }
+.button-outline:hover { background:#f0ecdf; }
+.eyebrow { color:#8b6d32; }
+h1 em { color:#8b6d32; }
+.welcome-hero { gap:clamp(30px,5vw,76px); }
+.welcome-hero .hero-art {
+  min-height:500px;
+  border-radius:46% 46% 12px 12px;
+  background:linear-gradient(145deg,#e8e9dc,#d7dfd1 58%,#c3d0c0);
+  box-shadow:0 28px 65px rgba(23,59,49,.13);
+}
+.welcome-hero .hero-art::before { border-color:rgba(139,109,50,.34); }
+.welcome-hero .art-caption {
+  color:#173b31;
+  background:rgba(255,253,247,.9);
+  border:1px solid rgba(185,154,88,.38);
+}
+.product-card {
+  border-color:rgba(135,151,131,.36);
+  background:#fffdf7;
+  box-shadow:0 8px 24px rgba(23,59,49,.045);
+}
+.product-card:hover {
+  border-color:rgba(185,154,88,.7);
+  box-shadow:0 20px 42px rgba(23,59,49,.13);
+}
+.product-image-wrap { background:radial-gradient(circle at 50% 40%,#fffdf8 0%,#f0eee4 75%,#e5e8dd 100%); }
+.product-tag { color:#173b31; border-color:rgba(185,154,88,.35); }
+.product-info h3 { color:#173b31; }
+.product-buy-row strong,.product-detail-price { color:#80632e; }
+.product-detail-visual {
+  position:relative;
+  align-content:center;
+  gap:12px;
+  padding:22px;
+  border-color:#e1dece;
+  border-radius:16px;
+  background:radial-gradient(circle at 50% 38%,#fffdf7 0%,#f0eee4 72%,#e4e8dc 100%);
+  box-shadow:0 20px 55px rgba(23,59,49,.08);
+}
+.product-detail-image { max-height:530px; }
+.product-detail-stock { border-left-color:#b99a58; background:#f1f0e6; color:#52685d; }
+.product-gallery-thumbnails { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; width:100%; }
+.product-gallery-thumb {
+  width:68px; height:68px; padding:4px; overflow:hidden; cursor:pointer;
+  border:1px solid #d7d8ca; border-radius:9px; background:#fffdf7;
+}
+.product-gallery-thumb.is-active { border:2px solid #9a7a3b; }
+.product-gallery-thumb img { width:100%; height:100%; object-fit:cover; border-radius:5px; }
+.site-footer { background:#173b31; color:#f7f4eb; }
+.site-footer .eyebrow,.site-footer a:hover { color:#ddc58d; }
+.site-footer p,.footer-bottom { color:#d5d9ce; }
+.footer-owner-access a { color:#f1e4c5; border-color:rgba(221,197,141,.55); }
+.welcome-benefits { border-color:#d7ddcf; background:#f1f3eb; color:#38594b; }
+.welcome-next { border-top-color:#e1dece; }
+@media(max-width:760px) {
+  .welcome-hero .hero-art { min-height:340px; }
+  .product-detail-visual { padding:12px; }
+}
+
+/* Real product photography in the welcome hero */
+.welcome-hero .hero-photo-art {
+  display:block;
+  min-height:500px;
+  overflow:hidden;
+  isolation:isolate;
+}
+.hero-photo {
+  position:absolute;
+  overflow:hidden;
+  border:9px solid rgba(255,253,247,.86);
+  border-radius:48% 48% 12px 12px;
+  background:#fffdf7;
+  box-shadow:0 24px 48px rgba(23,59,49,.17);
+}
+.hero-photo img { display:block; width:100%; height:100%; object-fit:cover; }
+.hero-photo-soap { left:12%; top:9%; width:49%; height:72%; transform:rotate(-5deg); }
+.hero-photo-scrub { right:9%; bottom:11%; width:43%; height:61%; border-radius:12px 12px 42% 42%; transform:rotate(5deg); }
+.welcome-hero .hero-photo-art .art-caption { position:absolute; z-index:3; left:50%; bottom:5%; transform:translateX(-50%); white-space:nowrap; }
+@media(max-width:760px) {
+ .welcome-hero .hero-photo-art { min-height:350px; }
+ .hero-photo { border-width:6px; }
+}
