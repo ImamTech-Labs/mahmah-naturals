@@ -104,6 +104,11 @@ def paystack_request(path: str, method: str, payload: dict | None = None) -> dic
     return result
 
 
+def is_valid_email(email: str) -> bool:
+    """Return whether an email has a basic, whitespace-free address shape."""
+    return bool(re.fullmatch(r"[^@\\s]+@[^@\\s]+\\.[^@\\s]+", email))
+
+
 def calculate_order(items: object, delivery_zone: str) -> tuple[int, list[dict], dict]:
     """Validate a checkout request and calculate its server-trusted subtotal."""
     if not isinstance(items, list) or not items or len(items) > 20:
@@ -164,7 +169,7 @@ class StorefrontHandler(SimpleHTTPRequestHandler):
                 raise ValueError("The checkout details are invalid. Please try again.")
             body = json.loads(self.rfile.read(content_length).decode("utf-8"))
             email = str(body.get("email", "")).strip()
-            if not re.fullmatch(r"[^\\s@]+@[^\\s@]+\\.[^\\s@]+", email):
+            if not is_valid_email(email):
                 raise ValueError("Enter a valid email address for your receipt.")
             subtotal, summary, zone = calculate_order(
                 body.get("items"), str(body.get("deliveryZone", ""))
