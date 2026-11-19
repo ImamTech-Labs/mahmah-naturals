@@ -1,6 +1,6 @@
 import unittest
 
-from server import DELIVERY_ZONES, PRODUCTS, calculate_order
+from server import DELIVERY_ZONES, PRODUCTS, calculate_order, is_valid_email
 
 
 class CalculateOrderTests(unittest.TestCase):
@@ -52,6 +52,18 @@ class CalculateOrderTests(unittest.TestCase):
     def test_rejects_non_object_cart_items(self):
         with self.assertRaises(ValueError):
             calculate_order(["black-soap"], "kaduna")
+
+
+class EmailValidationTests(unittest.TestCase):
+    def test_accepts_basic_valid_email_addresses(self):
+        for email in ("customer@example.com", "first.last+orders@example.co.uk"):
+            with self.subTest(email=email):
+                self.assertTrue(is_valid_email(email))
+
+    def test_rejects_malformed_email_addresses(self):
+        for email in ("", "customer", "customer@", "@example.com", "customer@example", "two@@example.com", "customer name@example.com", "customer@example .com"):
+            with self.subTest(email=email):
+                self.assertFalse(is_valid_email(email))
 
 
 if __name__ == "__main__":
