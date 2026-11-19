@@ -106,7 +106,7 @@ def paystack_request(path: str, method: str, payload: dict | None = None) -> dic
 
 def is_valid_email(email: str) -> bool:
     """Return whether an email has a basic, whitespace-free address shape."""
-    return bool(re.fullmatch(r"[^@\\s]+@[^@\\s]+\\.[^@\\s]+", email))
+    return bool(re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email))
 
 
 def calculate_order(items: object, delivery_zone: str) -> tuple[int, list[dict], dict]:
