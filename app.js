@@ -402,3 +402,41 @@ async function loadSharedCatalogue() {
   }
 }
 loadSharedCatalogue();
+
+
+// Responsive sidebar: desktop uses CSS hover/focus; touch devices use this toggle.
+(() => {
+  const sidebar = document.querySelector("#store-sidebar");
+  const toggle = document.querySelector("#sidebar-toggle");
+  if (!sidebar || !toggle) return;
+
+  const mobileQuery = window.matchMedia("(max-width: 760px)");
+  const setOpen = (open) => {
+    document.body.classList.toggle("nav-open", open && mobileQuery.matches);
+    toggle.setAttribute("aria-expanded", String(open && mobileQuery.matches));
+    toggle.setAttribute("aria-label", open && mobileQuery.matches ? "Close navigation" : "Open navigation");
+  };
+  const closeMenu = (returnFocus = false) => {
+    setOpen(false);
+    if (returnFocus && mobileQuery.matches) toggle.focus();
+  };
+
+  toggle.addEventListener("click", () => {
+    setOpen(toggle.getAttribute("aria-expanded") !== "true");
+  });
+  sidebar.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => closeMenu());
+  });
+  document.addEventListener("click", (event) => {
+    if (mobileQuery.matches && document.body.classList.contains("nav-open") &&
+        !sidebar.contains(event.target) && !toggle.contains(event.target)) closeMenu();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.body.classList.contains("nav-open")) {
+      closeMenu(true);
+    }
+  });
+  const handleViewportChange = () => closeMenu();
+  if (mobileQuery.addEventListener) mobileQuery.addEventListener("change", handleViewportChange);
+  else mobileQuery.addListener(handleViewportChange);
+})();
