@@ -28,6 +28,9 @@ function renderCatalogue() {
   const list = document.querySelector("#admin-product-list");
   list.replaceChildren();
   document.querySelector("#product-total").textContent = catalogue.length + " products";
+  document.querySelector("#stat-total").textContent = catalogue.length;
+  document.querySelector("#stat-available").textContent = catalogue.filter((product) => product.status === "available").length;
+  document.querySelector("#stat-unavailable").textContent = catalogue.filter((product) => product.status !== "available").length;
   catalogue.forEach((product) => {
     const row = document.createElement("article");
     row.className = "admin-product-row";
@@ -122,6 +125,7 @@ async function showWorkspace() {
   workspace.hidden = false;
   document.querySelector("#session-label").textContent = "Signed in as " + user.email;
   await loadCatalogue();
+  await loadOrders();
 }
 document.querySelector("#sign-out").addEventListener("click", async () => {
   await client.auth.signOut();
@@ -228,9 +232,11 @@ async function loadOrders() {
   list.replaceChildren(safeText("p", "Loading orders…", "admin-hint"));
   const { data, error } = await client.from("orders").select("*").order("created_at", { ascending: false }).limit(100);
   if (error) {
+    document.querySelector("#stat-orders").textContent = "—";
     list.replaceChildren(safeText("p", "Orders are not set up yet. Run the updated supabase-schema.sql in Supabase SQL Editor. Details: " + error.message, "admin-hint"));
     return;
   }
+  document.querySelector("#stat-orders").textContent = (data || []).length;
   renderOrders(data || []);
 }
 document.querySelector("#refresh-orders").addEventListener("click", loadOrders);
