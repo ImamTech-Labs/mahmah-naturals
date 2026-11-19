@@ -17,10 +17,10 @@
   </head>
 <body data-page="collection" data-category-page="skincare">
 
-  <aside class="section-sidebar" aria-label="Store navigation">
+  <aside class="section-sidebar" id="store-sidebar" aria-label="Store navigation">
     <a class="sidebar-brand" href="index.html" aria-label="MahMah Naturals welcome"><img src="assets/mahmah-naturals-logo.jpeg" alt="MahMah Naturals" /></a>
     <p class="sidebar-label">YOUR STORE</p>
-    <nav class="sidebar-nav">
+    <nav class="sidebar-nav" id="sidebar-navigation">
       <a class=""  href="index.html"><span class="nav-symbol">⌂</span>Welcome</a>
       <a class=""  href="collections.html"><span class="nav-symbol">▦</span>Collections</a>
       <a class="is-active" aria-current="page" href="skincare.html"><span class="nav-symbol">◌</span>Skincare</a>
@@ -33,6 +33,7 @@
   </aside>
 <div class="store-main"><div class="announcement">Thoughtful care for your everyday routine <span aria-hidden="true">✦</span> Delivery in selected Nigerian locations</div>
   <header class="store-topbar">
+    <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="store-sidebar"><span></span><span></span><span></span></button>
     <div class="mobile-brand"><a href="index.html">MahMah <span>NATURALS</span></a></div>
     <label class="search-box"><span class="sr-only">Search products</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg><input id="product-search" type="search" placeholder="Search products" autocomplete="off" /></label>
     <button class="cart-button" id="open-cart" type="button" aria-label="Open cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21 8H6"></path><circle cx="9.5" cy="20" r="1.2"></circle><circle cx="18" cy="20" r="1.2"></circle></svg><span>Bag</span><span class="cart-count" id="cart-count">0</span></button>
