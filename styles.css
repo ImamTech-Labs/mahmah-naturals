@@ -361,3 +361,109 @@ body { background: #fffdf8; }
  .store-main .footer-main { grid-template-columns:1fr 1fr; gap:25px 16px; padding:35px 18px 28px; }
  .store-main .footer-bottom,.store-main .footer-owner-access { padding-inline:18px; }
 }
+
+
+/* Animated compact sidebar: expands on pointer hover or keyboard focus. */
+@media (min-width: 761px) {
+  :root { --sidebar-width: 74px; }
+  .section-sidebar {
+    width: var(--sidebar-width);
+    padding: 22px 11px 16px;
+    overflow: hidden;
+    transition: width .28s cubic-bezier(.2,.75,.25,1), box-shadow .28s ease;
+  }
+  .section-sidebar:hover,
+  .section-sidebar:focus-within {
+    width: 248px;
+    padding-inline: 18px;
+    overflow-y: auto;
+    box-shadow: 14px 0 36px rgba(45,39,25,.12);
+  }
+  .sidebar-brand {
+    width: 175px;
+    margin-bottom: 36px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .18s ease;
+  }
+  .section-sidebar:hover .sidebar-brand,
+  .section-sidebar:focus-within .sidebar-brand { opacity: 1; visibility: visible; }
+  .sidebar-label, .sidebar-bottom { opacity: 0; visibility: hidden; transition: opacity .18s ease; }
+  .section-sidebar:hover .sidebar-label,
+  .section-sidebar:focus-within .sidebar-label,
+  .section-sidebar:hover .sidebar-bottom,
+  .section-sidebar:focus-within .sidebar-bottom { opacity: 1; visibility: visible; }
+  .sidebar-nav a { justify-content: flex-start; gap: 13px; padding-inline: 12px; overflow: hidden; white-space: nowrap; font-size: 0; }
+  .sidebar-nav a .nav-symbol { flex: 0 0 21px; font-size: 18px; }
+  .section-sidebar:hover .sidebar-nav a,
+  .section-sidebar:focus-within .sidebar-nav a { font-size: 12px; }
+  .store-main { margin-left: var(--sidebar-width); transition: margin-left .28s ease; }
+  .sidebar-toggle { display: none !important; }
+}
+
+/* Mobile navigation opens as a compact slide-in drawer. */
+.sidebar-toggle {
+  display: inline-flex;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid #e4dcc9;
+  border-radius: 7px;
+  background: #fffdf8;
+  cursor: pointer;
+}
+.sidebar-toggle span {
+  display: block;
+  width: 17px;
+  height: 2px;
+  border-radius: 2px;
+  background: #625637;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.sidebar-toggle[aria-expanded="true"] span:first-child { transform: translateY(7px) rotate(45deg); }
+.sidebar-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.sidebar-toggle[aria-expanded="true"] span:last-child { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 760px) {
+  .store-topbar { justify-content: flex-start; gap: 12px; }
+  .section-sidebar {
+    position: fixed;
+    z-index: 35;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(290px, 84vw);
+    height: auto;
+    padding: 25px 18px 18px;
+    overflow-y: auto;
+    border-right: 1px solid #e8e1d2;
+    border-bottom: 0;
+    background: #faf8f1;
+    box-shadow: 12px 0 34px rgba(35,30,20,.13);
+    transform: translateX(-105%);
+    transition: transform .28s cubic-bezier(.2,.75,.25,1);
+  }
+  body.nav-open .section-sidebar { transform: translateX(0); }
+  body.nav-open .store-topbar { z-index: 36; }
+  .section-sidebar .sidebar-brand { display: block; width: 165px; margin: 0 auto 30px; }
+  .section-sidebar .sidebar-label { display: block; margin-bottom: 12px; }
+  .section-sidebar .sidebar-nav { display: grid; gap: 5px; overflow: visible; padding: 0; }
+  .section-sidebar .sidebar-nav a { flex: initial; min-height: 45px; gap: 13px; padding: 0 12px; font-size: 12px; }
+  .section-sidebar .nav-symbol { width: 21px; font-size: 17px; }
+  .section-sidebar .sidebar-bottom { display: grid; gap: 14px; margin-top: auto; }
+  body.nav-open::after {
+    position: fixed;
+    z-index: 30;
+    inset: 0;
+    content: "";
+    background: rgba(31,29,22,.38);
+  }
+  body.nav-open { overflow: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section-sidebar, .store-main, .sidebar-toggle span { transition: none !important; }
+}
